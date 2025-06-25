@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devoteam Recruitment</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS RESET & DEFAULTS */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+            --color-text: #1a1a1a;
+            --color-primary-accent: #D95375;
+            --color-secondary-accent: #4A6B53;
+            --color-background: #FFFFFF;
+            --color-card-background: #F7F7F3;
+            --color-border: #E0E0E0;
+            --header-height: 85px; /* Define header height for reuse */
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* LAYOUT CONTAINER */
+        .container {
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* HEADER & NAVIGATION */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--color-border);
+            z-index: 1000;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            align-items: left;
+            font-style: italic;
+            font-size: 1 rem;
+            color: var(--color-primary-accent);
+            text-decoration: none;
+        }
+
+        /* Basic styling for the new logo image */
+        .logo-img {
+            max-height: 45px; /* Adjust height as needed */
+            display: block;
+            /* This transition creates the smooth "rebound" when scrolling up from the bottom */
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Apply the keyframe animation on hover */
+        .logo-img:hover {
+            animation: rebound 0.5s ease;
+        }
+
+        /* Keyframes for the hover rebound effect */
+        @keyframes rebound {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* This class will be added via JavaScript on scroll */
+        .logo-img.flatten-logo {
+            /* Flattens the image vertically and stretches it slightly for effect */
+            transform: scaleY(0.1) scaleX(1.2);
+            /* A different transition for when it flattens for a snappier feel */
+            transition-timing-function: ease-in-out;
+            transition-duration: 0.4s;
+        }
+
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--color-text);
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-primary-accent);
+        }
+
+        /* MAIN CONTENT & SECTIONS */
+        main {
+            padding-top: var(--header-height);
+        }
+        
+        .content-section {
+            padding: 80px 0;
+        }
+        
+        /* FIX: Animation is applied to inner wrappers, not the main section container */
+        .anim-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .anim-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cta-button {
+            background-color: var(--color-secondary-accent);
+            color: #FFFFFF;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        } 
+        
+        .section-header {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 4rem;
+        }
+        
+        .section-subtitle {
+            font-family: var(--font-serif);
+            font-style: italic;
+            color: #666;
+            margin-top: 8px;
+        }
+        
+        /* JOB LISTINGS GRID & CARD STYLES */
+        .job-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .job-card {
+            background-color: transparent;
+            min-height: 450px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .job-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 12px;
+        }
+
+        .job-card.is-flipped .job-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .job-card-front, .job-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .job-card-front {
+            background-color: var(--color-card-background);
+        }
+        
+         .job-card-front :hover {
+            background-color: #F7F7F8;
+        }
+
+        .job-card-front .card-content {
+            padding: 20px;
+        }
+
+        .job-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* We apply the hover to the whole card for a better user experience */
+        .job-card:hover .job-card-front img {
+            /* Makes the image slightly larger */
+            transform: scale(1.05);
+            /* Adds a soft, modern-looking shadow */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .job-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        .job-card .location, .job-card .department {
+            font-size: 0.9rem;
+            color: var(--color-primary-accent);;
+        }
+        .job-card .location { font-weight: 500; color: var(--color-text); margin-bottom: 12px; font-size: 1.1rem; }
+
+        .job-card-back {
+            background-color: #434343;
+            color: white;
+            transform: rotateY(180deg);
+            padding: 25px;
+            justify-content: space-between;
+        }
+        
+        .job-card-back h4 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            color: var(--color-primary-accent);
+            margin-bottom: 15px;
+        }
+        
+        .job-card-back p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            flex-grow: 1;
+        }
+
+        .apply-button {
+            display: inline-block;
+            background-color: var(--color-primary-accent);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 700;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .apply-button:hover {
+            background-color: #c84365;
+            transform: translateY(-2px);
+        }
+        
+        /* "OUR PROJECTS" SECTION STYLES */
+        .projects-nav {
+            position: sticky;
+            top: var(--header-height);
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 900;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .projects-nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .projects-nav-links a {
+            text-decoration: none;
+            color: var(--color-text);
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 6px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .projects-nav-links a:hover {
+            background-color: var(--color-card-background);
+        }
+        .projects-nav-links a.active {
+            background-color: var(--color-secondary-accent);
+            color: white;
+        }
+
+        .projects-content {
+            padding-top: 80px;
+        }
+
+        .project-item {
+            margin-bottom: 120px;
+            scroll-margin-top: 180px;
+        }
+        
+        /* Container for the filter buttons */
+        .filter-buttons {
+            display: flex;
+            gap: 8px; /* Adds space between buttons */
+            margin: 8px;
+        }
+
+        /* Default state for each button inside the container */
+        .filter-buttons button {
+            font-family: var(--font-sans);
+            background-color: transparent;
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Style for when a user hovers over a button */
+        .filter-buttons button:hover {
+            background-color: var(--color-card-background);
+        }
+
+        /* Style for the currently active/selected filter button */
+        .filter-buttons button.active {
+            background-color: var(--color-text);
+            color: var(--color-background);
+            border-color: var(--color-text);
+        }
+
+        .project-hero { text-align: center; padding: 40px 0; }
+        .project-hero h3 { font-size: 3rem; font-family: var(--font-serif); margin-bottom: 8px; }
+        .project-hero p { font-size: 1.2rem; color:  var(--color-primary-accent); margin-bottom: 24px; }
+        .project-hero .buttons { display: flex; justify-content: center; gap: 15px; }
+        .project-hero .button { padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 500; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .project-hero .button.primary { background-color: var(--color-text); color: white; }
+        .project-hero .button.secondary { background-color: var(--color-card-background); color: var(--color-text); border: 1px solid var(--color-border); }
+
+        .project-images { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 40px 0 80px 0; }
+        .project-images .img-placeholder { width: 100%; height: 400px; background-color: var(--color-card-background); border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--color-border); }
+        .project-images .img-placeholder img { width: 100%; height: 100%; stroke: #d1d1d1; }
+        .project-images .img-placeholder svg { width: 50%; height: 50%; stroke: #d1d1d1; }
+        .project-images .img-placeholder {
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+        .project-item .img-placeholder:hover {
+            /* ...lift the image placeholder up slightly */
+            transform: translateY(-12px);
+
+            /* Scale the image up by 5% */
+            transform: scale(1.15);
+
+            /* Add a modern shadow to give it depth */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            
+            /* Ensure the scaled image appears cleanly on top of other elements */
+            z-index: 10;
+        }
+        .project-features h4 { font-size: 2rem; font-weight: 700; }
+        .project-features .subheading { color: #666; margin-bottom: 40px; }
+
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+        .feature-item { display: flex; gap: 15px; align-items: flex-start; }
+        .feature-item .icon { flex-shrink: 0; width: 24px; height: 24px; border: 2px solid var(--color-text); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-top: 5px; }
+        .feature-item h5 { color: var(--color-primary-accent); font-size: 1.1rem; margin-bottom: 5px; }
+        .feature-item p { font-size: 0.95rem; color: #555; line-height: 1.5; }
+        
+        /* CONTACT FORM STYLES */
+        .contact-form { max-width: 700px; margin: 20px auto 0 auto; }
+        .form-row { display: flex; gap: 20px; width: 100%; }
+        .form-group { display: flex; flex-direction: column; margin-bottom: 20px; width: 100%; }
+        .form-group label { margin-bottom: 8px; font-weight: 500; font-size: 0.9rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid var(--color-border); border-radius: 8px; font-family: var(--font-sans); font-size: 1rem; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--color-primary-accent); box-shadow: 0 0 0 3px rgba(217, 83, 117, 0.2); }
+        .form-submit-button { width: 100%; padding: 15px; font-size: 1rem; font-weight: 700; color: white; background-color: var(--color-secondary-accent); border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.3s ease, transform 0.3s ease; }
+        .form-submit-button:hover { background-color: #3b5743; transform: translateY(-2px); }
+        
+        /* OTHER STYLES */
+        .placeholder-section { min-height: 300px; display: flex; align-items: center; justify-content: center; border: 2px dashed var(--color-border); border-radius: 12px; }
+        footer { text-align: center; padding: 40px; margin-top: 60px; border-top: 1px solid var(--color-border); color: #888; }
+
+        /* Ensures images inside placeholders fill the container properly */
+        .project-images .img-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 12px; /* Match the parent's border-radius */
+        }
+
+        /* Main container for all the "about" list items */
+        #about-container {
+            display: grid;
+            gap: 30px; /* Space between cards */
+        }
+
+        /* Individual list item card */
+        .about-list-item {
+            position: relative;
+            padding: 40px;
+            border-radius: 16px;
+            overflow: hidden; /* Ensures the inner image doesn't overflow the rounded corners */
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white; /* Default text color on the overlay */
+        }
+
+        /* Pseudo-element for the dark overlay, allowing text to be readable */
+        .about-list-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 26, 26, 0.5); /* Semi-transparent black overlay */
+            z-index: 1;
+        }
+
+        /* Background image for the card */
+        .about-list-item .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the image covers the card */
+            z-index: 0;
+            transform: scale(1);
+            transition: transform 0.4s ease-in-out;
+        }
+
+        .about-list-item:hover .background-image {
+            transform: scale(1.05); /* Subtle zoom effect on hover */
+        }
+
+        /* Container for the text and buttons, sits on top of the overlay */
+        .about-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .about-content .title {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .about-content .subtitle {
+            font-size: 1rem;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+
+        .about-content .description {
+            font-size: 0.95rem;
+            margin-top: 15px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8); /* Slightly lighter for readability */
+        }
+
+        .about-content .label {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin-top: 20px;
+            font-weight: 500;
+            text-decoration: none; /* Add this to remove the underline */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Add this for a smooth hover effect */
+        }
+
+        /* Add this new rule for the hover state */
+        .about-content .label:hover {
+            background-color: rgba(255, 255, 255, 0.4); /* Make it slightly brighter */
+            transform: translateY(-2px); /* Add a subtle lift */
+        }
+
+        .about-content .info-line {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--color-background); /* White background like the screenshot */
+            color: var(--color-text);
+            padding: 10px 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .about-content .info-line svg {
+            width: 20px;
+            height: 20px;
+        }
+        /* RESPONSIVE STYLES */
+       /* RESPONSIVENESS */
+        @media (max-width: 992px) {
+            .container { padding: 0 20px; }
+            .section-title { font-size: 3rem; }
+            .main-nav { gap: 20px; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            main { padding-top: 200px; }
+            .main-header { padding: 15px 0; }
+            .header-container { flex-direction: column; gap: 20px; }
+            .main-nav { flex-direction: column; width: 100%; gap: 15px; }
+            .nav-links { justify-content: center; width: 100%; gap: 16px; }
+            .section-header { text-align: left; }
+            .section-title { font-size: 2.5rem; }
+            .form-row { flex-direction: column; gap: 0; }
+             .projects-nav { top: 160px; /* Adjust for stacked main nav */ }
+            .project-images { grid-template-columns: 1fr; }
+            .project-images .img-placeholder { height: 250px; }
+            .features-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="main-header">
+        <div class="container header-container">
+            <a href="https://www.devoteam.com/services/data/" class="logo">
+             <img src="Pictures/devoteam_logo.jpg" alt="Devoteam Logo" class="logo-img">
+            </a>
+            <a class="logo">Devoteam internal projects</a>
+            <nav class="main-nav">
+                <a href="#roles" class="cta-button">Open Roles</a>
+                <ul class="nav-links">
+                    <li><a href="#projects">Our Projects</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="roles" class="content-section">
+            <div class="container anim-fade-in">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Open Roles</h2>
+                        <p class="section-subtitle">Click on a card to learn more</p>
+                    </div>
+                        <div class="filter-buttons">
+                            <button data-filter="default" class="active">Default</button>
+                            <button data-filter="az">A-Z</button>
+                            <button data-filter="Project">By Project</button>
+                        </div>
+                </div>
+                <div class="job-grid" id="job-grid-container"></div>
+            </div>
+        </section>
+
+        <section id="projects" class="content-section">
+            <div class="container anim-fade-in">
+             <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Current projects</h2>
+                        <p class="section-subtitle">Learn more on innovative solutions with direct client impact </p>
+                    </div>
+                </div>
+                </div>
+            <nav class="projects-nav">
+                <div class="container">
+                    <ul class="projects-nav-links" id="projects-nav-container">
+                        </ul>
+                </div>
+            </nav>
+
+            <div class="container projects-content" id="projects-container">
+                </div>
+        </section>
+
+       <!-- UPDATED HTML for the #about section -->
+
+        <section id="about" class="content-section">
+            <div class="container anim-fade-in">
+                <div class="section-header" style="text-align: center;">
+                    <h2 class="section-title">Addiotional involvment at Devoteam</h2>
+                    <p class="section-subtitle">More opportunity to contribute at processes, life and people of Devoteam</p>
+                </div>
+                
+                <!-- The new 'About' components will be dynamically inserted here -->
+                <div id="about-container"></div>
+            </div>
+        </section>
+
+        <section id="contact" class="content-section">
+             <div class="container anim-fade-in">
+                 <div class="section-header" style="text-align: center;">
+                    <h2 class="section-title">Contact Us</h2>
+                    <p class="section-subtitle">Have a question? We'd love to hear from you.</p>
+                 </div>
+                 <form class="contact-form" id="contact-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="6" required></textarea>
+                    </div>
+                    <button type="submit" class="form-submit-button">Submit Message</button>
+                 </form>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Devoteam. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- JOB CARDS DATA AND DISPLAY FUNCTION ---
+        const jobsData = [
+           {
+                title: ' Cloud Engineer',
+                Specification: 'Snowflake Streamlit',
+                Project: 'Ask my model',
+                imageUrl: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
+                description: 'Improve CORTEX functionnality based on semantic files and code structure'
+            },
+            {
+                title: 'SOC Cybersecurity Analyst',
+                Specification: 'Databrick, Splunk',
+                Project: 'Cyber Lake',
+                imageUrl: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
+                description: 'Work in tandem with a ML engineer to provide adequate context to build a ML solution to predict security breach.'
+            },
+            {
+                title: 'Full Stack Developer',
+                Specification: 'Back end to build',
+                Project: 'Internal project website',
+                imageUrl: 'Pictures/web.jpg',
+                description: 'Build easy to manage and update backend for this web application.'
+         },
+            {
+                title: 'AI/ML Specialist',
+                Specification: 'SnowPark',
+                Project: 'Smart Factory',
+                imageUrl: 'Pictures/ai.jpg',
+                description: 'Improve the current model to predict IOT defects and maintenance'
+            },
+            {
+                title: 'Onboarding coordinator',
+                Specification: 'G suite',
+                Project: 'Digital Experience & Design',
+                imageUrl: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
+                description: 'Create a welcome experience for new joiners, including a welcome kit and onboarding process.'
+            }
+        ];
+        const jobGrid = document.getElementById('job-grid-container');
+        const contactForm = document.getElementById('contact-form');
+
+        function displayJobs(jobs) {
+            if (!jobGrid) return;
+            jobGrid.innerHTML = ''; 
+            
+            jobs.forEach(job => {
+                const card = document.createElement('div');
+                card.className = 'job-card anim-fade-in';
+                card.innerHTML = `
+                    <div class="job-card-inner">
+                        <div class="job-card-front">
+                            <img src="${job.imageUrl}" alt="${job.title}">
+                            <div class="card-content">
+                                <h3>${job.title}</h3>
+                                <p class="location">${job.Specification}</p>
+                                <p class="department">In ${job.Project}</p>
+                            </div>
+                        </div>
+                        <div class="job-card-back">
+                            <div>
+                                <h4>Job Description</h4>
+                                <p>${job.description}</p>
+                            </div>
+                            <a href="#" class="apply-button">Apply Now</a>
+                        </div>
+                    </div>`;
+                jobGrid.appendChild(card);
+            });
+
+            document.querySelectorAll('.job-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('apply-button')) return;
+                    this.classList.toggle('is-flipped');
+                });
+            });
+        }
+        
+        displayJobs(jobsData);
+
+        
+
+        // --- FILTERING LOGIC FOR "OPEN ROLES" ---
+        const filterButtonsContainer = document.querySelector('.filter-buttons');
+        const originalJobsOrder = [...jobsData]; // Create a copy to preserve original order
+
+        if (filterButtonsContainer) {
+            filterButtonsContainer.addEventListener('click', (event) => {
+                const targetButton = event.target.closest('button');
+                if (!targetButton) return;
+
+                const filterType = targetButton.dataset.filter;
+
+                // Update the active button style
+                filterButtonsContainer.querySelector('.active').classList.remove('active');
+                targetButton.classList.add('active');
+
+                let sortedJobs = [];
+
+                // Apply the selected filter
+                if (filterType === 'az') {
+                    sortedJobs = [...jobsData].sort((a, b) => a.title.localeCompare(b.title));
+                } else if (filterType === 'Project') {
+                    // Sort by department, then by title within each department
+                    sortedJobs = [...jobsData].sort((a, b) => {
+                        if (a.Project < b.Project) return -1;
+                        if (a.Project > b.Project) return 1;
+                        return a.title.localeCompare(b.title);
+                    });
+                } else {
+                    // 'default' filter
+                    sortedJobs = originalJobsOrder;
+                }
+
+                // Re-render the job grid with the sorted data
+                displayJobs(sortedJobs);
+                
+                // Re-observe the newly rendered cards for animations
+                document.querySelectorAll('.job-card.anim-fade-in').forEach(el => {
+                    // We only want to add the class, not re-observe with the main observer
+                    // A simple timeout gives the DOM time to update before animation
+                    setTimeout(() => el.classList.add('visible'), 50);
+                });
+            });
+        }
+        const animationObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.05 });
+        
+        document.querySelectorAll('.anim-fade-in').forEach(el => animationObserver.observe(el));
+        
+        // JavaScript to Add / Update
+
+        // --- "OUR PROJECTS" SECTION SCRIPT ---
+
+        // 1. Define the project data in a JSON-like structure
+        // JavaScript to UPDATE
+
+// 1. Define the project data in a JSON-like structure
+// The first object for "Ask!" has been updated with the new content.
+const projectsData = [
+    {
+        id: 'project-ask',
+        title: 'Ask!', // Using brand name from website text
+        subtitle: 'An innovative solution that radically simplifies data interaction.', // From website text
+        buttons: [
+            { text: 'View Demo', class: 'primary', link: 'https://www.youtube.com/watch?v=-CwhFNgjsI8&ab_channel=SnowflakeenFran%C3%A7ais' },
+            { text: 'Read Documentation', class: 'secondary', link: 'https://www.devoteam.com/fr/ask-by-devoteam/' }
+        ],
+        images: [
+            'Pictures/ASK_SAMPLE.jpg',
+            'Pictures/ASK.png' 
+        ],
+        features: {
+            heading: 'Advantages of Ask! for Your Business', // From website text
+            subheading: 'Measurable results from the first day.', // From website text
+            items: [
+                {
+                    title: 'Productivity Gain',
+                    description: 'Allow your business teams to access data directly in natural language, freeing up your technical teams for high-value tasks.'
+                },
+                {
+                    title: 'Instant Performance Insights',
+                    description: 'Get precise insights in seconds. Ask! translates text to SQL and provides immediate output without complex dashboards.'
+                },
+                {
+                    title: 'Informed Decision-Making',
+                    description: 'Leverage reliable, up-to-date insights for strategic decisions, including powerful time series analysis capabilities.'
+                },
+                {
+                    title: 'Controlled Governance',
+                    description: 'Maintain full control over your data with guaranteed security and reliability, while facilitating its use across the company.'
+                },
+                {
+                    title: 'Optimized User Experience',
+                    description: 'Interact with an intelligent chatbot that offers personalized recommendations and feedback for a fluid, intuitive experience.'
+                },
+                {
+                    title: 'Robust & Scalable Technology',
+                    description: 'Built on powerful and scalable technologies like Snowflake to ensure financial and operational data is always secure and available.'
+                },
+            ]
+        }
+    },
+    {
+        // --- THIS OBJECT IS NOW UPDATED WITH THE NEW CONTENT ---
+        id: 'project-factory',
+        title: 'Smart Factory',
+        subtitle: 'Agentic AI revolutionizing how operators interact with production data.',
+        buttons: [
+            { text: 'View Demo', class: 'primary', link: '#' },
+            { text: 'Read Documentation', class: 'secondary', link: 'https://www.devoteam.com/fr/expert-view/smart-factory-ia-agentic/' }
+        ],
+        images: [
+            'Pictures/SMART_FACTORY.png',
+            'Pictures/SMART_FACTORY_2.png'
+        ],
+        features: {
+            heading: 'Immediate Advantages for Your Factory',
+            subheading: 'A smarter, more accessible factory where data serves everyone, not just the experts.',
+            items: [
+                {
+                    title: 'Natural Language Chatbot',
+                    description: 'Empower operators to query real-time sensor data (temperature, vibration, etc.) directly from the workshop using a multi-agent chatbot.'
+                },
+                {
+                    title: 'Data Democratization',
+                    description: 'Every employee becomes a "Data Citizen." Access and interact with complex production data without needing to be a data scientist.'
+                },
+                {
+                    title: 'Predictive Maintenance',
+                    description: 'Integrate machine learning models to anticipate equipment failures, optimize your Overall Equipment Effectiveness (OEE), and reduce downtime.'
+                },
+                {
+                    title: 'Unified Data Intelligence',
+                    description: 'Our innovation combines structured sensor data with unstructured text from technical manuals using Snowflake Cortex Analyst & Search.'
+                },
+                {
+                    title: 'Native Scalability',
+                    description: 'The solution is designed to evolve dynamically, with a semantic model that automatically adapts to new data and system configurations.'
+                },
+                {
+                    title: 'Rapid & Valuable Deployment',
+                    description: 'We focus on value, not just technical parts. We can deploy a working demonstration with your data in hours, not weeks.'
+                },
+            ]
+        }
+    },
+    {
+        // --- THIS OBJECT IS NEWLY ADDED ---
+        id: 'project-cyberlake',
+        title: 'Cyberlake',
+        subtitle: 'An AI-Powered Security Data Lake for Proactive Threat Detection.',
+        buttons: [
+            { text: 'View Demo', class: 'primary', link: 'https://drive.google.com/file/d/1ZTEkCUk3PhM242xoJb4Iord7RA7dXQ13/view?usp=drive_link' },
+            { text: 'Read Documentation', class: 'secondary', link: 'https://docs.google.com/document/d/15njGIXBXtfMgPSGNMUiWwmjGVtHvPFNrkvSXbvi4-So/edit?usp=drive_link' }
+        ],
+        images: [
+            'Pictures/CYBER_LAKE.png',
+            'Pictures/CYBER_LAKE_2.png'
+        ],
+        features: {
+            heading: 'Key Features of the Cyberlake Platform',
+            subheading: 'Confronting the rising tide of cyber threats with intelligent, unified log analysis.',
+            items: [
+                {
+                    title: 'Efficient Log Offloading',
+                    description: 'Massively offload security logs from platforms like Splunk to a cost-effective Databricks environment, breaking down data silos.'
+                },
+                {
+                    title: 'Unified Forensic Analysis',
+                    description: 'Perform powerful forensic investigations from your familiar Splunk interface directly on centralized data stored in Databricks delta tables.'
+                },
+                {
+                    title: 'Automated Threat Detection',
+                    description: 'Leverage the power of Sigma, the open standard for security rules. We automatically parse and apply these rules to your live log streams.'
+                },
+                {
+                    title: 'AI-Powered Anomaly Scoring',
+                    description: 'Go beyond simple matches. Our AI scores log/rule pairs using similarity search, detecting potential attacks with a >80% confidence score.'
+                },
+                {
+                    title: 'Advanced Threat Intelligence',
+                    description: 'Utilize Machine Learning to improve anomaly detection and identify sophisticated threats within the 200-day attack preparation window.'
+                },
+                {
+                    title: 'Centralized Security Dashboard',
+                    description: 'Visualize all alerts, scores, and flagged logs in a single, intuitive dashboard, enabling your security team to act decisively.'
+                },
+            ]
+        }
+    }
+    // Add other projects like ASK MY MODEL here
+];
+
+        // 2. Function to dynamically generate and display the projects
+        function displayProjects(projectList) {
+            const projectsContainer = document.getElementById('projects-container');
+            const projectsNavContainer = document.getElementById('projects-nav-container');
+
+            if (!projectsContainer || !projectsNavContainer) return;
+
+            // Clear any existing static content
+            projectsContainer.innerHTML = '';
+            projectsNavContainer.innerHTML = '';
+
+            projectList.forEach((project, index) => {
+                // --- Create the navigation link ---
+                const navLink = document.createElement('li');
+                navLink.innerHTML = `<a href="#${project.id}" class="${index === 0 ? 'active' : ''}">${project.title}</a>`;
+                projectsNavContainer.appendChild(navLink);
+
+                // --- Create the project article ---
+                const article = document.createElement('article');
+                article.className = 'project-item anim-fade-in';
+                article.id = project.id;
+
+                // Map features data to HTML
+                const featuresHTML = project.features.items.map(feature => `
+                    <div class="feature-item">
+                        <div class="icon">i</div>
+                        <div>
+                            <h5>${feature.title}</h5>
+                            <p>${feature.description}</p>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Map buttons data to HTML
+                const buttonsHTML = project.buttons.map(button => `
+                    <a href="${button.link}" class="button ${button.class}">${button.text}</a>
+                `).join('');
+
+                article.innerHTML = `
+                    <div class="project-hero">
+                        <h3>${project.title}</h3>
+                        <p>${project.subtitle}</p>
+                        <div class="buttons">${buttonsHTML}</div>
+                    </div>
+                    <div class="project-images">
+                        <div class="img-placeholder"><img src="${project.images[0]}" alt="${project.title} screenshot 1"></div>
+                        <div class="img-placeholder"><img src="${project.images[1]}" alt="${project.title} screenshot 2"></div>
+                    </div>
+                    <div class="project-features">
+                        <h4>${project.features.heading}</h4>
+                        <p class="subheading">${project.features.subheading}</p>
+                        <div class="features-grid">${featuresHTML}</div>
+                    </div>
+                `;
+                projectsContainer.appendChild(article);
+            });
+        }
+
+        // 3. Call the function and re-initialize listeners
+        displayProjects(projectsData);
+
+        // Re-select the dynamically created elements to attach listeners
+        const projectNav = document.querySelector('.projects-nav');
+        const projectNavLinks = document.querySelectorAll('.projects-nav-links a');
+        const projectItems = document.querySelectorAll('.project-item');
+        const animFadeInElements = document.querySelectorAll('.anim-fade-in');
+
+        // Re-initialize the fade-in observer for the new elements
+        animFadeInElements.forEach(el => animationObserver.observe(el));
+
+        if (projectNav && projectNavLinks.length > 0 && projectItems.length > 0) {
+            const projectLinkObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        projectNavLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-40% 0px -60% 0px' });
+
+            projectItems.forEach(project => projectLinkObserver.observe(project));
+
+            projectNavLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        const mainHeaderHeight = document.querySelector('.main-header').offsetHeight;
+                        const projectNavHeight = projectNav.offsetHeight;
+                        const totalOffset = mainHeaderHeight + projectNavHeight;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - totalOffset;
+
+                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    }
+                });
+            });
+        }
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                alert('Thank you for your message! We will get back to you shortly.');
+                contactForm.reset();
+            });
+        }
+
+        // JavaScript to Add
+
+        // --- "ABOUT US" SECTION SCRIPT ---
+
+        // 1. Define the data for the "About Us" list items
+        const aboutData = [
+            {
+        title: 'Boost Visibility',
+        subtitle: 'Help grow Devoteam\'s brand and presence in the tech community.',
+        label: 'Internal Contribution',
+        labelLink: '#', 
+        infoIcon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" /></svg>',
+        infoText: 'Host an external event; schools, salons, etc.',
+        backgroundImage: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080'
+    },
+    {
+        title: 'Share Your Knowledge',
+        subtitle: 'Create training modules, deliver presentations, and publish your findings.',
+        label: 'Internal Contribution',
+        infoIcon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>',
+        infoText: 'Create a training module; onboarding, technical, etc.',
+        backgroundImage: 'https://images.unsplash.com/photo-1531545514256-b1400bc00f31?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080'
+    },
+    {
+        title: 'Mentor Colleagues',
+        subtitle: 'Guide the next generation by mentoring interns and new consultants.',
+        label: 'Internal Contribution',
+        labelLink: '#', 
+        infoIcon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0l15.482 0m-15.482 0a50.57 50.57 0 01-2.658-.813m2.658.814a60.436 60.436 0 002.126 6.347m10.858-6.347a60.436 60.436 0 002.126-6.347m-15.482 0l15.482 0" /></svg>',
+        infoText: 'Mentor for interns/apprentices: certification, career path, etc.',
+        backgroundImage: 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080'
+    },
+    {
+        title: 'Drive Business Growth',
+        subtitle: 'Contribute to pre-sales proposals, manage client demos, and report new leads.',
+        label: 'Internal Contribution',
+        labelLink: '#', 
+        infoIcon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-3.75-2.25M21 12l-2.25-1.5m-3.75 2.25l-4.5-4.5m4.5 4.5l-3.75 2.25M12 18l-4.5-4.5m-4.5 4.5L9 11.25" /></svg>',
+        infoText: 'Participate in a client demo: Request for proposal, demo, POC etc.',
+        backgroundImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080'
+    },
+    {
+        title: 'Engage in Communities',
+        subtitle: 'Lead discussions, write articles for the Devoteam blog, and share your expertise.',
+        label: 'Internal Contribution',
+        labelLink: '#', 
+        infoIcon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.76 9.76 0 01-2.53-.423l-3.11 3.11a.75.75 0 01-1.06-1.06l3.11-3.11A9.76 9.76 0 013 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" /></svg>',
+        infoText: 'Become a community contributor: write an article, lead a discussion, etc.',
+        backgroundImage: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080'
+    },
+    {
+        title: 'Attract New Talent',
+        subtitle: 'Help us find the best new colleagues by submitting referrals and conducting interviews.',
+        label: 'Internal Contribution',
+        labelLink: '#', 
+        infoIcon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125c1.121-1.121 1.121-2.924 0-4.045-1.121-1.121-2.924-1.121-4.045 0s-1.121 2.924 0 4.045c1.121 1.121 2.924 1.121 4.045 0zM12 21a9 9 0 100-18 9 9 0 000 18z" /></svg>',
+        infoText: 'Conduct recruitment interviews',
+        backgroundImage: 'https://images.unsplash.com/photo-1556740738-b6a63e27c4df?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080'
+    },
+    {
+        title: 'Shape Your Entity',
+        subtitle: 'Participate in internal projects, propose process improvements, and contribute to white papers.',
+        label: 'Internal Contribution',
+        labelLink: '#', 
+        infoIcon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg>',
+        infoText: 'Participate in writing a white paper',
+        backgroundImage: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080'
+    }
+        ];
+
+        // 2. Function to dynamically generate and display the "About Us" items
+       function displayAboutItems(aboutList) {
+    const aboutContainer = document.getElementById('about-container');
+    if (!aboutContainer) return;
+
+    aboutContainer.innerHTML = ''; // Clear existing content
+
+    aboutList.forEach(item => {
+        const listItem = document.createElement('div');
+        // This class gives the item opacity: 0 initially
+        listItem.className = 'about-list-item anim-fade-in';
+
+         listItem.innerHTML = `
+            <img src="${item.backgroundImage}" class="background-image" alt="">
+            <div class="about-content">
+                <h3 class="title">${item.title}</h3>
+                <p class="subtitle">${item.subtitle}</p>
+                <div>
+                    <a href="${item.labelLink}" class="label">${item.label}</a>
+                </div>
+                <div>
+                    <span class="info-line">
+                        ${item.infoIcon}
+                        <span>${item.infoText}</span>
+                    </span>
+                </div>
+            </div>
+        `;
+        aboutContainer.appendChild(listItem);
+
+        // --- FIX ---
+        // Tell the observer to start watching this newly created element.
+        animationObserver.observe(listItem);
+    });
+        }
+
+        // 3. Call the new function to build the section
+        displayAboutItems(aboutData);
+    });
+    </script>
+
+</body>
+</html>
