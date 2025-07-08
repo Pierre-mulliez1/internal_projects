@@ -923,6 +923,50 @@ const projectsData = [
         }
     },
     {
+        id: 'project-monitron',
+        title: 'Monitron',
+        subtitle: 'Using AWS and AI to predict industrial machine failures before they happen.',
+        buttons: [
+            { text: 'View Streamlit UI', class: 'primary', link: '#' },
+            { text: 'Explore Architecture', class: 'secondary', link: '#' }
+        ],
+        images: [
+            'Pictures/MONITRON.png',
+            'Pictures/MONITRON_2.png'
+        ],
+        features: {
+            heading: 'Key Features of the Monitron Platform',
+            subheading: 'From raw sensor data to an actionable alert, a complete solution for your equipment\'s health.',
+            items: [
+                {
+                    title: 'Automated Data Pipeline on AWS',
+                    description: 'Collection of IoT sensor data on S3, with processing and consolidation (JSON to CSV) via event-triggered Lambda functions.'
+                },
+                {
+                    title: 'Intelligent Orchestration with Step Functions',
+                    description: 'A robust workflow orchestrates the inference process, checking sensor status in Aurora and ML model availability.'
+                },
+                {
+                    title: 'AI-Powered Anomaly Detection',
+                    description: 'Utilizes a Gaussian Mixture Model (GMM) on SageMaker to classify vibrations and detect anomalies with high probability.'
+                },
+                {
+                    title: 'Multi-Criteria Alarm System',
+                    description: 'Generate alerts based on AI (e.g., 4 of 6 abnormal vibrations), ISO-20816 standard threshold breaches, or critical temperature changes.'
+                },
+                {
+                    title: 'Centralized Analytics Hub on Aurora',
+                    description: 'A single database for sensor metadata, inference results, model statuses, and the complete history of maintenance logs.'
+                },
+                {
+                    title: 'Intuitive User Interface',
+                    description: 'A Streamlit application hosted on ECS allows maintenance agents to visualize real-time alarms and consult historical actions.'
+                },
+            ]
+        }
+    },
+    
+    {
         // --- THIS OBJECT IS NEWLY ADDED ---
         id: 'project-cyberlake',
         title: 'Cyberlake',
