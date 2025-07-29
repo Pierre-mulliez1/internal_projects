@@ -714,50 +714,99 @@
                 title: ' Cloud Engineer',
                 Specification: 'Snowflake Streamlit',
                 Project: 'Ask my model',
-                imageUrl: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
-                description: 'Improve CORTEX functionnality based on semantic files and code structure'
+                imageUrl: 'Pictures/Snowflake_Logo.png',
+                description: 'Improve CORTEX functionnality based on semantic files and code structure',
+                applyEmail: 'tanguy.remy@devoteam.com'
+            },
+            {
+                title: 'POC finance',
+                Specification: 'Snowflake Streamlit',
+                Project: 'ASK!',
+                imageUrl: 'Pictures/Snowflake_Logo.png',
+                description: 'Create a catered finance experience version of ASK! including a representative data model and a set of questions to answer.',
+                applyEmail: 'tanguy.remy@devoteam.com'
+            },
+            {
+                title: 'ASK! Databrick',
+                Specification: 'Snowflake, Databrick',
+                Project: 'ASK!',
+                imageUrl: 'Pictures/Databricks_Logo.png',
+                description: 'Refactor the current ASK! model to be able to use Databrick as a data source',
+                applyEmail: 'tanguy.remy@devoteam.com'
             },
             {
                 title: 'SOC Cybersecurity Analyst',
                 Specification: 'Databrick, Splunk',
                 Project: 'Cyber Lake',
                 imageUrl: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
-                description: 'Work in tandem with a ML engineer to provide adequate context to build a ML solution to predict security breach.'
+                description: 'Work in tandem with a ML engineer to provide adequate context to build a ML solution to predict security breach.',
+                applyEmail: 'tanguy.remy@devoteam.com'
             },
             {
                 title: 'Full Stack Developer',
                 Specification: 'Back end to build',
                 Project: 'Internal project website',
                 imageUrl: 'Pictures/web.jpg',
-                description: 'Build easy to manage and update backend for this web application.'
-         },
+                description: 'Build easy to manage and update backend for this web application.',
+                applyEmail: 'tanguy.remy@devoteam.com'
+            },
             {
                 title: 'AI/ML Specialist',
                 Specification: 'SnowPark',
                 Project: 'Smart Factory',
                 imageUrl: 'Pictures/ai.jpg',
-                description: 'Improve the current model to predict IOT defects and maintenance'
+                description: 'Improve the current model to predict IOT defects and maintenance',
+                applyEmail: 'tanguy.remy@devoteam.com'
             },
             {
                 title: 'Onboarding coordinator',
                 Specification: 'G suite',
                 Project: 'Digital Experience & Design',
                 imageUrl: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
-                description: 'Create a welcome experience for new joiners, including a welcome kit and onboarding process.'
+                description: 'Create a welcome experience for new joiners, including a welcome kit and onboarding process.',
+                applyEmail: 'tanguy.remy@devoteam.com'
+            },
+            {
+                title: 'Qualification tools',
+                Specification: 'Spreadsheet',
+                Project: 'Digital Experience & Design',
+                imageUrl: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
+                description: 'Create a support tool to help the team qualify new joiners and their skills through an intuitive sets of Q&A and a DAX interface.',
+                applyEmail: 'tanguy.remy@devoteam.com'
             }
         ];
         const jobGrid = document.getElementById('job-grid-container');
         const contactForm = document.getElementById('contact-form');
 
-        function displayJobs(jobs) {
-            if (!jobGrid) return;
-            jobGrid.innerHTML = ''; 
-            
-            jobs.forEach(job => {
-                const card = document.createElement('div');
-                card.className = 'job-card anim-fade-in';
-                card.innerHTML = `
-                    <div class="job-card-inner">
+        // JavaScript to UPDATE
+
+// 2. UPDATED displayJobs function to generate the mailto: link
+function displayJobs(jobs) {
+    if (!jobGrid) return;
+    jobGrid.innerHTML = ''; 
+    
+    jobs.forEach(job => {
+        const card = document.createElement('div');
+        card.className = 'job-card anim-fade-in';
+
+        // --- New logic to create the mailto link ---
+        const subject = encodeURIComponent(`Application for: ${job.title}`);
+        const body = encodeURIComponent(
+    `Bonjour,
+
+    J'aimerais contribuer au projet ${job.Project} à travers l'opportunité  ${job.title}.
+    Je suis disponible [x] jours par semaine pour cette mission.
+    
+    Ci-joint mon Whoz pour plus de détails sur mon expérience et mes compétences.
+
+    Merci,
+    [Your Name]`
+        );
+        const mailtoLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${job.applyEmail}&su=${subject}&body=${body}`;
+        // --- End of new logic ---
+
+        card.innerHTML = `
+           <div class="job-card-inner">
                         <div class="job-card-front">
                             <img src="${job.imageUrl}" alt="${job.title}">
                             <div class="card-content">
@@ -771,19 +820,24 @@
                                 <h4>Job Description</h4>
                                 <p>${job.description}</p>
                             </div>
-                            <a href="#" class="apply-button">Apply Now</a>
+                            <a href="${mailtoLink}" class="apply-button" target="_blank" rel="noopener noreferrer">Apply Now</a>
                         </div>
                     </div>`;
-                jobGrid.appendChild(card);
-            });
+        jobGrid.appendChild(card);
+    });
 
-            document.querySelectorAll('.job-card').forEach(card => {
-                card.addEventListener('click', function(e) {
-                    if (e.target.classList.contains('apply-button')) return;
-                    this.classList.toggle('is-flipped');
-                });
-            });
-        }
+    // The rest of the function (event listeners) remains the same
+    document.querySelectorAll('.job-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Prevent the card from flipping when the apply button is clicked
+            if (e.target.classList.contains('apply-button')) {
+                e.stopPropagation(); // Stop the click from bubbling up to the card
+                return;
+            }
+            this.classList.toggle('is-flipped');
+        });
+    });
+}
         
         displayJobs(jobsData);
 
@@ -1197,7 +1251,7 @@ const projectsData = [
         title: 'Engage in Communities',
         subtitle: 'Lead discussions, write articles for the Devoteam blog, and share your expertise.',
         label: 'How to contribute',
-        labelLink: '#', 
+        labelLink: 'https://docs.google.com/document/d/1fbPuN75U3_yJy7gm0fZumXVFIfDG8u-lhTM_q8U7Ymc/edit?usp=sharing', 
         infoIcon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.76 9.76 0 01-2.53-.423l-3.11 3.11a.75.75 0 01-1.06-1.06l3.11-3.11A9.76 9.76 0 013 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" /></svg>',
         infoText: 'Become a community contributor: write an article, lead a discussion, etc.',
         backgroundImage: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080'
