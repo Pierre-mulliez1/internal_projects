@@ -114,6 +114,44 @@
             transition-duration: 0.4s;
         }
 
+        /* Styles for the new search bar in the header */
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            width: 18px;
+            height: 18px;
+            stroke: #aaa;
+        }
+
+        #search-bar {
+            background-color: var(--color-card-background);
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            padding: 8px 16px 8px 38px; /* Left padding to make space for the icon */
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            width: 200px;
+            transition: width 0.3s ease-in-out, background-color 0.3s ease;
+        }
+
+        #search-bar:focus {
+            outline: none;
+            width: 250px; /* Expand on focus */
+            background-color: white;
+            border-color: var(--color-primary-accent);
+        }
+
+        /* Utility class to hide elements that don't match the search */
+        .hide-search-item {
+            display: none !important;
+        }
+
         .main-nav {
             display: flex;
             align-items: center;
@@ -127,10 +165,12 @@
         }
 
         .nav-links a {
-            text-decoration: none;
-            color: var(--color-text);
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
+        text-decoration: none;
+        color: var(--color-text);
+        font-size: 0.95rem;
+        padding: 8px 12px;
+        border-radius: 6px;
+        transition: color 0.3s ease, background-color 0.3s ease;
         }
 
         .nav-links a:hover {
@@ -605,6 +645,12 @@
              <img src="Pictures/devoteam_logo.jpg" alt="Devoteam Logo" class="logo-img">
             </a>
             <a class="logo">Devoteam internal projects</a>
+            <div class="search-container">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="search-icon">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+    </svg>
+    <input type="search" id="search-bar" placeholder="Search...">
+</div>
             <nav class="main-nav">
                 <a href="#roles" class="cta-button">Open Roles</a>
                 <ul class="nav-links">
@@ -659,7 +705,7 @@
         <section id="about" class="content-section">
             <div class="container anim-fade-in">
                 <div class="section-header" style="text-align: center;">
-                    <h2 class="section-title">Addiotional involvment at Devoteam</h2>
+                    <h2 class="section-title">Aditional involvment at Devoteam</h2>
                     <p class="section-subtitle">More opportunity to contribute at processes, life and people of Devoteam</p>
                 </div>
                 
@@ -706,7 +752,44 @@
         </div>
     </footer>
 
-    <script>
+<script>
+            // --- GLOBAL SEARCH FUNCTIONALITY ---
+    const searchBar = document.getElementById('search-bar');
+    if (searchBar) {
+        // We must wait a moment for all items to be rendered by other functions
+        setTimeout(() => {
+            const allJobCards = document.querySelectorAll('.job-card');
+            const allProjectItems = document.querySelectorAll('.project-item');
+            const allAboutItems = document.querySelectorAll('.about-list-item');
+
+            const allSearchableItems = [...allJobCards, ...allProjectItems, ...allAboutItems];
+
+            searchBar.addEventListener('input', () => {
+                const searchTerm = searchBar.value.toLowerCase().trim();
+                let firstMatch = null;
+
+                allSearchableItems.forEach(item => {
+                    const itemText = item.textContent.toLowerCase();
+                    const isMatch = itemText.includes(searchTerm);
+
+                    if (isMatch) {
+                        item.classList.remove('hide-search-item');
+                        if (!firstMatch) {
+                            firstMatch = item; // Store the first element that matches
+                        }
+                    } else {
+                        item.classList.add('hide-search-item');
+                    }
+                });
+
+                // If a match was found and the user is actively searching, scroll to it
+                if (firstMatch && searchTerm) {
+                    firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+        }, 500); // A 500ms delay ensures dynamic content is loaded before we select it
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         // --- JOB CARDS DATA AND DISPLAY FUNCTION ---
         const jobsData = [
@@ -778,66 +861,66 @@
         const jobGrid = document.getElementById('job-grid-container');
         const contactForm = document.getElementById('contact-form');
 
-        // JavaScript to UPDATE
 
-// 2. UPDATED displayJobs function to generate the mailto: link
-function displayJobs(jobs) {
-    if (!jobGrid) return;
-    jobGrid.innerHTML = ''; 
-    
-    jobs.forEach(job => {
-        const card = document.createElement('div');
-        card.className = 'job-card anim-fade-in';
 
-        // --- New logic to create the mailto link ---
-        const subject = encodeURIComponent(`Application for: ${job.title}`);
-        const body = encodeURIComponent(
-    `Bonjour,
+    // 2. UPDATED displayJobs function to generate the mailto: link
+    function displayJobs(jobs) {
+        if (!jobGrid) return;
+        jobGrid.innerHTML = ''; 
+        
+        jobs.forEach(job => {
+            const card = document.createElement('div');
+            card.className = 'job-card anim-fade-in';
 
-    J'aimerais contribuer au projet ${job.Project} à travers l'opportunité  ${job.title}.
-    Je suis disponible [x] jours par semaine pour cette mission.
-    
-    Ci-joint mon Whoz pour plus de détails sur mon expérience et mes compétences.
+            // --- New logic to create the mailto link ---
+            const subject = encodeURIComponent(`Application for: ${job.title}`);
+            const body = encodeURIComponent(
+        `Bonjour,
 
-    Merci,
-    [Your Name]`
-        );
-        const mailtoLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${job.applyEmail}&su=${subject}&body=${body}`;
-        // --- End of new logic ---
+        J'aimerais contribuer au projet ${job.Project} à travers l'opportunité  ${job.title}.
+        Je suis disponible [x] jours par semaine pour cette mission.
+        
+        Ci-joint mon Whoz pour plus de détails sur mon expérience et mes compétences.
 
-        card.innerHTML = `
-           <div class="job-card-inner">
-                        <div class="job-card-front">
-                            <img src="${job.imageUrl}" alt="${job.title}">
-                            <div class="card-content">
-                                <h3>${job.title}</h3>
-                                <p class="location">${job.Specification}</p>
-                                <p class="department">In ${job.Project}</p>
+        Merci,
+        [Your Name]`
+            );
+            const mailtoLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${job.applyEmail}&su=${subject}&body=${body}`;
+            // --- End of new logic ---
+
+            card.innerHTML = `
+            <div class="job-card-inner">
+                            <div class="job-card-front">
+                                <img src="${job.imageUrl}" alt="${job.title}">
+                                <div class="card-content">
+                                    <h3>${job.title}</h3>
+                                    <p class="location">${job.Specification}</p>
+                                    <p class="department">In ${job.Project}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="job-card-back">
-                            <div>
-                                <h4>Job Description</h4>
-                                <p>${job.description}</p>
+                            <div class="job-card-back">
+                                <div>
+                                    <h4>Job Description</h4>
+                                    <p>${job.description}</p>
+                                </div>
+                                <a href="${mailtoLink}" class="apply-button" target="_blank" rel="noopener noreferrer">Apply Now</a>
                             </div>
-                            <a href="${mailtoLink}" class="apply-button" target="_blank" rel="noopener noreferrer">Apply Now</a>
-                        </div>
-                    </div>`;
-        jobGrid.appendChild(card);
-    });
-
-    // The rest of the function (event listeners) remains the same
-    document.querySelectorAll('.job-card').forEach(card => {
-        card.addEventListener('click', function(e) {
-            // Prevent the card from flipping when the apply button is clicked
-            if (e.target.classList.contains('apply-button')) {
-                e.stopPropagation(); // Stop the click from bubbling up to the card
-                return;
-            }
-            this.classList.toggle('is-flipped');
+                        </div>`;
+            jobGrid.appendChild(card);
         });
-    });
-}
+
+        // The rest of the function (event listeners) remains the same
+        document.querySelectorAll('.job-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Prevent the card from flipping when the apply button is clicked
+                if (e.target.classList.contains('apply-button')) {
+                    e.stopPropagation(); // Stop the click from bubbling up to the card
+                    return;
+                }
+                this.classList.toggle('is-flipped');
+            });
+        });
+    }
         
         displayJobs(jobsData);
 
@@ -1315,7 +1398,7 @@ const projectsData = [
         // 3. Call the new function to build the section
         displayAboutItems(aboutData);
     });
-    </script>
+</script>
 
 </body>
 </html>
