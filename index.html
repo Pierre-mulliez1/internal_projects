@@ -612,6 +612,72 @@
             width: 20px;
             height: 20px;
         }
+
+        /*  AI Response Modal */
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .modal-content h3 {
+            font-family: var(--font-serif);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .response-text {
+            line-height: 1.6;
+            min-height: 100px; /* To show spinner correctly */
+        }
+
+        /* Simple loading spinner */
+        .loading-spinner {
+            border: 4px solid var(--color-card-background);
+            border-top: 4px solid var(--color-secondary-accent);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
         /* RESPONSIVE STYLES */
        /* RESPONSIVENESS */
         @media (max-width: 992px) {
@@ -751,45 +817,110 @@
             <p>&copy; 2025 Devoteam. All Rights Reserved.</p>
         </div>
     </footer>
-
+<div id="ai-response-modal" class="modal-overlay">
+    <div class="modal-content">
+        <button id="modal-close-button" class="modal-close">&times;</button>
+        <h3>LLM answer</h3>
+        <div id="ai-response-text" class="response-text">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+</div>
 <script>
-            // --- GLOBAL SEARCH FUNCTIONALITY ---
+
+
+// --- GLOBAL SEARCH FUNCTIONALITY (DUAL MODE) ---
     const searchBar = document.getElementById('search-bar');
+    const aiModal = document.getElementById('ai-response-modal');
+    const aiResponseText = document.getElementById('ai-response-text');
+    const modalCloseButton = document.getElementById('modal-close-button');
+
     if (searchBar) {
+        let allSearchableItems = [];
+        
         // We must wait a moment for all items to be rendered by other functions
         setTimeout(() => {
-            const allJobCards = document.querySelectorAll('.job-card');
-            const allProjectItems = document.querySelectorAll('.project-item');
-            const allAboutItems = document.querySelectorAll('.about-list-item');
+            allSearchableItems = [
+                ...document.querySelectorAll('.job-card'), 
+                ...document.querySelectorAll('.project-item'), 
+                ...document.querySelectorAll('.about-list-item')
+            ];
+        }, 500);
 
-            const allSearchableItems = [...allJobCards, ...allProjectItems, ...allAboutItems];
+        // --- Debounce function to prevent API calls on every keystroke ---
+        let debounceTimer;
+        const debounce = (callback, time) => {
+            window.clearTimeout(debounceTimer);
+            debounceTimer = window.setTimeout(callback, time);
+        };
 
-            searchBar.addEventListener('input', () => {
-                const searchTerm = searchBar.value.toLowerCase().trim();
-                let firstMatch = null;
+        // --- Function to handle the live filtering ---
+        const handleLiveFilter = (searchTerm) => {
+            let firstMatch = null;
+            const previousHighlight = document.querySelector('.search-highlight');
+            if (previousHighlight) {
+                previousHighlight.classList.remove('search-highlight');
+            }
 
-                allSearchableItems.forEach(item => {
-                    const itemText = item.textContent.toLowerCase();
-                    const isMatch = itemText.includes(searchTerm);
-
-                    if (isMatch) {
-                        item.classList.remove('hide-search-item');
-                        if (!firstMatch) {
-                            firstMatch = item; // Store the first element that matches
-                        }
-                    } else {
-                        item.classList.add('hide-search-item');
-                    }
-                });
-
-                // If a match was found and the user is actively searching, scroll to it
-                if (firstMatch && searchTerm) {
-                    firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            allSearchableItems.forEach(item => {
+                const itemText = item.textContent.toLowerCase();
+                const isMatch = itemText.includes(searchTerm);
+                if (isMatch) {
+                    item.classList.remove('hide-search-item');
+                    if (!firstMatch) firstMatch = item;
+                } else {
+                    item.classList.add('hide-search-item');
                 }
             });
-        }, 500); // A 500ms delay ensures dynamic content is loaded before we select it
-    }
 
+            if (firstMatch && searchTerm) {
+                firstMatch.classList.add('search-highlight');
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        };
+        
+        const handleGeminiSearch = async (query) => {
+            aiModal.style.display = 'flex';
+            aiResponseText.innerHTML = '<div class="loading-spinner"></div>'; // Show loading spinner
+            
+            // In a real application, you would fetch from your secure backend endpoint here.
+            console.log("Calling Gemini API with query:", query);
+            await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate network delay
+            const mockResponse = `Need a real Backed API to call Gemini with query: "${query}".`;
+
+            aiResponseText.innerHTML = mockResponse;
+        };
+        
+        // --- Main Event Listener for the Search Bar ---
+        searchBar.addEventListener('input', () => {
+            const searchTerm = searchBar.value;
+            
+            // Hide the modal if the user starts typing again
+            aiModal.style.display = 'none'; 
+            
+            if (searchTerm.length > 20) {
+                // Un-hide all items to reset the view for the AI search
+                allSearchableItems.forEach(item => item.classList.remove('hide-search-item'));
+                // Use debounce to trigger the API call only when the user stops typing
+                debounce(() => handleGeminiSearch(searchTerm), 800);
+            } else {
+                // Perform live filtering for shorter queries
+                handleLiveFilter(searchTerm.toLowerCase().trim());
+            }
+        });
+
+        // --- Modal close functionality ---
+        if (modalCloseButton && aiModal) {
+            modalCloseButton.addEventListener('click', () => {
+                aiModal.style.display = 'none';
+            });
+            aiModal.addEventListener('click', (event) => {
+                if (event.target === aiModal) {
+                    aiModal.style.display = 'none';
+                }
+            });
+        }
+    }
     document.addEventListener('DOMContentLoaded', function() {
         // --- JOB CARDS DATA AND DISPLAY FUNCTION ---
         const jobsData = [
@@ -1399,6 +1530,8 @@ const projectsData = [
         displayAboutItems(aboutData);
     });
 </script>
+
+
 
 </body>
 </html>
