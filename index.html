@@ -165,16 +165,23 @@
         }
 
         .nav-links a {
-        text-decoration: none;
-        color: var(--color-text);
-        font-size: 0.95rem;
-        padding: 8px 12px;
-        border-radius: 6px;
-        transition: color 0.3s ease, background-color 0.3s ease;
+            text-decoration: none;
+            color: var(--color-text);
+            font-size: 1.2rem;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
         }
 
+        /* Green hover and active state */
         .nav-links a:hover {
             color: var(--color-primary-accent);
+        }
+
+        .nav-links a.active {
+            background-color: var(--color-secondary-accent);
+            color: white;
         }
 
         /* MAIN CONTENT & SECTIONS */
@@ -354,13 +361,60 @@
         .projects-nav {
             position: sticky;
             top: var(--header-height);
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(8px);
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
             z-index: 900;
-            padding: 15px 0;
+            padding: 8px 0;
             border-bottom: 1px solid var(--color-border);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
+        /* Container for both nav levels */
+        .projects-nav .container {
+            display: flex;
+            flex-direction: column; /* Stack categories and project links */
+            align-items: center;
+            gap: 8px;
+        }
+
+       
+        .hidden-nav {
+            display: none !important;
+        }
+
+        .return-container {
+            position: sticky;
+            left: 0;
+            background: white; /* Matches nav background */
+            padding-right: 10px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+        }
+
+        .return-button {
+            background-color: var(--color-primary-accent);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .return-button:hover {
+            background-color: var(--color-primary-accent);
+            color: white;
+        }
+
+        /* Ensure the container stays centered */
+        .projects-nav .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
         .projects-nav-links {
             display: flex;
             justify-content: center;
@@ -377,7 +431,7 @@
             transition: background-color 0.3s, color 0.3s;
         }
         .projects-nav-links a:hover {
-            background-color: var(--color-card-background);
+            color: var(--color-primary-accent);
         }
         .projects-nav-links a.active {
             background-color: var(--color-secondary-accent);
@@ -718,8 +772,8 @@
     <input type="search" id="search-bar" placeholder="Search...">
 </div>
             <nav class="main-nav">
-                <a href="#roles" class="cta-button">Open Roles</a>
                 <ul class="nav-links">
+                    <li><a href="#roles">Open Roles</a></li>
                     <li><a href="#projects">Our Projects</a></li>
                     <li><a href="#about">Other involvment</a></li>
                     <li><a href="#contact">Contact</a></li>
@@ -1119,11 +1173,11 @@
         // JavaScript to UPDATE
 
 // 1. Define the project data in a JSON-like structure
-// The first object for "Ask!" has been updated with the new content.
 const projectsData = [
     {
         id: 'project-ask',
         title: 'Ask!', 
+        category: 'Client', // Added category
         entity: 'DataDriven',
         subtitle: 'An innovative solution that radically simplifies data interaction.', 
         buttons: [
@@ -1138,37 +1192,19 @@ const projectsData = [
             heading: 'Advantages of Ask! for Your Business', 
             subheading: 'Measurable results from the first day.', 
             items: [
-                {
-                    title: 'Productivity Gain',
-                    description: 'Allow your business teams to access data directly in natural language, freeing up your technical teams for high-value tasks.'
-                },
-                {
-                    title: 'Instant Performance Insights',
-                    description: 'Get precise insights in seconds. Ask! translates text to SQL and provides immediate output without complex dashboards.'
-                },
-                {
-                    title: 'Informed Decision-Making',
-                    description: 'Leverage reliable, up-to-date insights for strategic decisions, including powerful time series analysis capabilities.'
-                },
-                {
-                    title: 'Controlled Governance',
-                    description: 'Maintain full control over your data with guaranteed security and reliability, while facilitating its use across the company.'
-                },
-                {
-                    title: 'Optimized User Experience',
-                    description: 'Interact with an intelligent chatbot that offers personalized recommendations and feedback for a fluid, intuitive experience.'
-                },
-                {
-                    title: 'Robust & Scalable Technology',
-                    description: 'Built on powerful and scalable technologies like Snowflake to ensure financial and operational data is always secure and available.'
-                },
+                { title: 'Productivity Gain', description: 'Allow your business teams to access data directly in natural language, freeing up your technical teams for high-value tasks.' },
+                { title: 'Instant Performance Insights', description: 'Get precise insights in seconds. Ask! translates text to SQL and provides immediate output without complex dashboards.' },
+                { title: 'Informed Decision-Making', description: 'Leverage reliable, up-to-date insights for strategic decisions, including powerful time series analysis capabilities.' },
+                { title: 'Controlled Governance', description: 'Maintain full control over your data with guaranteed security and reliability, while facilitating its use across the company.' },
+                { title: 'Optimized User Experience', description: 'Interact with an intelligent chatbot that offers personalized recommendations and feedback for a fluid, intuitive experience.' },
+                { title: 'Robust & Scalable Technology', description: 'Built on powerful and scalable technologies like Snowflake to ensure financial and operational data is always secure and available.' },
             ]
         }
     },
     {
-        // --- THIS OBJECT IS NOW UPDATED WITH THE NEW CONTENT ---
         id: 'project-factory',
         title: 'Smart Factory',
+        category: 'Client', // Added category
         entity: 'Data Driven',
         subtitle: 'Agentic AI revolutionizing how operators interact with production data.',
         buttons: [
@@ -1183,36 +1219,19 @@ const projectsData = [
             heading: 'Immediate Advantages for Your Factory',
             subheading: 'A smarter, more accessible factory where data serves everyone, not just the experts.',
             items: [
-                {
-                    title: 'Natural Language Chatbot',
-                    description: 'Empower operators to query real-time sensor data (temperature, vibration, etc.) directly from the workshop using a multi-agent chatbot.'
-                },
-                {
-                    title: 'Data Democratization',
-                    description: 'Every employee becomes a "Data Citizen." Access and interact with complex production data without needing to be a data scientist.'
-                },
-                {
-                    title: 'Predictive Maintenance',
-                    description: 'Integrate machine learning models to anticipate equipment failures, optimize your Overall Equipment Effectiveness (OEE), and reduce downtime.'
-                },
-                {
-                    title: 'Unified Data Intelligence',
-                    description: 'Our innovation combines structured sensor data with unstructured text from technical manuals using Snowflake Cortex Analyst & Search.'
-                },
-                {
-                    title: 'Native Scalability',
-                    description: 'The solution is designed to evolve dynamically, with a semantic model that automatically adapts to new data and system configurations.'
-                },
-                {
-                    title: 'Rapid & Valuable Deployment',
-                    description: 'We focus on value, not just technical parts. We can deploy a working demonstration with your data in hours, not weeks.'
-                },
+                { title: 'Natural Language Chatbot', description: 'Empower operators to query real-time sensor data (temperature, vibration, etc.) directly from the workshop using a multi-agent chatbot.' },
+                { title: 'Data Democratization', description: 'Every employee becomes a "Data Citizen." Access and interact with complex production data without needing to be a data scientist.' },
+                { title: 'Predictive Maintenance', description: 'Integrate machine learning models to anticipate equipment failures, optimize your Overall Equipment Effectiveness (OEE), and reduce downtime.' },
+                { title: 'Unified Data Intelligence', description: 'Our innovation combines structured sensor data with unstructured text from technical manuals using Snowflake Cortex Analyst & Search.' },
+                { title: 'Native Scalability', description: 'The solution is designed to evolve dynamically, with a semantic model that automatically adapts to new data and system configurations.' },
+                { title: 'Rapid & Valuable Deployment', description: 'We focus on value, not just technical parts. We can deploy a working demonstration with your data in hours, not weeks.' },
             ]
         }
     },
     {
         id: 'project-monitron',
         title: 'Monitron',
+        category: 'Client', // Added category
         entity: 'Data Driven x A cloud',
         subtitle: 'Using AWS and AI to predict industrial machine failures before they happen.',
         buttons: [
@@ -1227,38 +1246,19 @@ const projectsData = [
             heading: 'Key Features of the Monitron Platform',
             subheading: 'From raw sensor data to an actionable alert, a complete solution for your equipment\'s health.',
             items: [
-                {
-                    title: 'Automated Data Pipeline on AWS',
-                    description: 'Collection of IoT sensor data on S3, with processing and consolidation (JSON to CSV) via event-triggered Lambda functions.'
-                },
-                {
-                    title: 'Intelligent Orchestration with Step Functions',
-                    description: 'A robust workflow orchestrates the inference process, checking sensor status in Aurora and ML model availability.'
-                },
-                {
-                    title: 'AI-Powered Anomaly Detection',
-                    description: 'Utilizes a Gaussian Mixture Model (GMM) on SageMaker to classify vibrations and detect anomalies with high probability.'
-                },
-                {
-                    title: 'Multi-Criteria Alarm System',
-                    description: 'Generate alerts based on AI (e.g., 4 of 6 abnormal vibrations), ISO-20816 standard threshold breaches, or critical temperature changes.'
-                },
-                {
-                    title: 'Centralized Analytics Hub on Aurora',
-                    description: 'A single database for sensor metadata, inference results, model statuses, and the complete history of maintenance logs.'
-                },
-                {
-                    title: 'Intuitive User Interface',
-                    description: 'A Streamlit application hosted on ECS allows maintenance agents to visualize real-time alarms and consult historical actions.'
-                },
+                { title: 'Automated Data Pipeline on AWS', description: 'Collection of IoT sensor data on S3, with processing and consolidation (JSON to CSV) via event-triggered Lambda functions.' },
+                { title: 'Intelligent Orchestration with Step Functions', description: 'A robust workflow orchestrates the inference process, checking sensor status in Aurora and ML model availability.' },
+                { title: 'AI-Powered Anomaly Detection', description: 'Utilizes a Gaussian Mixture Model (GMM) on SageMaker to classify vibrations and detect anomalies with high probability.' },
+                { title: 'Multi-Criteria Alarm System', description: 'Generate alerts based on AI (e.g., 4 of 6 abnormal vibrations), ISO-20816 standard threshold breaches, or critical temperature changes.' },
+                { title: 'Centralized Analytics Hub on Aurora', description: 'A single database for sensor metadata, inference results, model statuses, and the complete history of maintenance logs.' },
+                { title: 'Intuitive User Interface', description: 'A Streamlit application hosted on ECS allows maintenance agents to visualize real-time alarms and consult historical actions.' },
             ]
         }
     },
-    
     {
-        // --- THIS OBJECT IS NEWLY ADDED ---
         id: 'project-cyberlake',
         title: 'Cyberlake',
+        category: 'Client', // Added category
         entity: 'Data Driven x Cyber',
         subtitle: 'An AI-Powered Security Data Lake for Proactive Threat Detection.',
         buttons: [
@@ -1273,576 +1273,491 @@ const projectsData = [
             heading: 'Key Features of the Cyberlake Platform',
             subheading: 'Confronting the rising tide of cyber threats with intelligent, unified log analysis.',
             items: [
-                {
-                    title: 'Efficient Log Offloading',
-                    description: 'Massively offload security logs from platforms like Splunk to a cost-effective Databricks environment, breaking down data silos.'
-                },
-                {
-                    title: 'Unified Forensic Analysis',
-                    description: 'Perform powerful forensic investigations from your familiar Splunk interface directly on centralized data stored in Databricks delta tables.'
-                },
-                {
-                    title: 'Automated Threat Detection',
-                    description: 'Leverage the power of Sigma, the open standard for security rules. We automatically parse and apply these rules to your live log streams.'
-                },
-                {
-                    title: 'AI-Powered Anomaly Scoring',
-                    description: 'Go beyond simple matches. Our AI scores log/rule pairs using similarity search, detecting potential attacks with a >80% confidence score.'
-                },
-                {
-                    title: 'Advanced Threat Intelligence',
-                    description: 'Utilize Machine Learning to improve anomaly detection and identify sophisticated threats within the 200-day attack preparation window.'
-                },
-                {
-                    title: 'Centralized Security Dashboard',
-                    description: 'Visualize all alerts, scores, and flagged logs in a single, intuitive dashboard, enabling your security team to act decisively.'
-                },
+                { title: 'Efficient Log Offloading', description: 'Massively offload security logs from platforms like Splunk to a cost-effective Databricks environment, breaking down data silos.' },
+                { title: 'Unified Forensic Analysis', description: 'Perform powerful forensic investigations from your familiar Splunk interface directly on centralized data stored in Databricks delta tables.' },
+                { title: 'Automated Threat Detection', description: 'Leverage the power of Sigma, the open standard for security rules. We automatically parse and apply these rules to your live log streams.' },
+                { title: 'AI-Powered Anomaly Scoring', description: 'Go beyond simple matches. Our AI scores log/rule pairs using similarity search, detecting potential attacks with a >80% confidence score.' },
+                { title: 'Advanced Threat Intelligence', description: 'Utilize Machine Learning to improve anomaly detection and identify sophisticated threats within the 200-day attack preparation window.' },
+                { title: 'Centralized Security Dashboard', description: 'Visualize all alerts, scores, and flagged logs in a single, intuitive dashboard, enabling your security team to act decisively.' },
             ]
         }
     },
-    // Add other projects like ASK MY MODEL here
-{
-        "id": "project-labelit",
-        "title": "LabelIT",
-        "entity": "Devoteam Research",
-        "subtitle": "Comment créer une labellisation unifiée pour les ressources cloud.",
-        "buttons": [
-            { "text": "View Demo", "class": "primary", "link": "http://labelit.devolab.lan" },
-            { "text": "Read Documentation", "class": "secondary", "link": "https://drive.google.com/drive/folders/1SicyRIM1-fD8iTw3DczXsQCJrYOlnfvQ?usp=drive_link" }
+    {
+        id: "project-labelit",
+        title: "LabelIT",
+        category: "Research", // Added category
+        entity: "Devoteam Research",
+        subtitle: "Comment créer une labellisation unifiée pour les ressources cloud.",
+        buttons: [
+            { text: "View Demo", class: "primary", link: "http://labelit.devolab.lan" },
+            { text: "Read Documentation", class: "secondary", link: "https://drive.google.com/drive/folders/1SicyRIM1-fD8iTw3DczXsQCJrYOlnfvQ?usp=drive_link" }
         ],
-        "images": [
+        images: [
             "Pictures/labelit.png",
             "Pictures/labelit2.png"
         ],
-        "features": {
-            "heading": "Points clés du projet LabelIT",
-            "subheading": "Optimiser la gestion des ressources cloud par une labellisation intelligente et cohérente.",
-            "items": [
-                {
-                    "title": "Base de connaissance unifiée",
-                    "description": "Modélisation d'une base de connaissance pour la labellisation des ressources cloud."
-                },
-                {
-                    "title": "Correction intelligente",
-                    "description": "Méthode de correction des labels dans un contexte hétérogène via l'IA."
-                },
-                {
-                    "title": "Accompagnement à la gestion",
-                    "description": "Méthode d'accompagnement pour la gestion des labels cloud."
-                },
-                {
-                    "title": "Technologies utilisées",
-                    "description": "Exploitation du NLP, Knowledge Management, Kubernetes et Python."
-                }
+        features: {
+            heading: "Points clés du projet LabelIT",
+            subheading: "Optimiser la gestion des ressources cloud par une labellisation intelligente et cohérente.",
+            items: [
+                { title: "Base de connaissance unifiée", description: "Modélisation d'une base de connaissance pour la labellisation des ressources cloud." },
+                { title: "Correction intelligente", description: "Méthode de correction des labels dans un contexte hétérogène via l'IA." },
+                { title: "Accompagnement à la gestion", description: "Méthode d'accompagnement pour la gestion des labels cloud." },
+                { title: "Technologies utilisées", description: "Exploitation du NLP, Knowledge Management, Kubernetes et Python." }
             ]
         }
     },
     {
-        "id": "project-observit",
-        "title": "ObservIT",
-        "entity": "Devoteam Research",
-        "subtitle": "Construire une approche d'observabilité multi-cloud.",
-        "buttons": [
-            { "text": "View Demo", "class": "primary", "link": "#" },
-            { "text": "Read Documentation", "class": "secondary", "link": "https://drive.google.com/drive/folders/1z2bl-DILUcrs7brIxgNK64UzEsLBMS17?usp=drive_link" }
+        id: "project-observit",
+        title: "ObservIT",
+        category: "Research", // Added category
+        entity: "Devoteam Research",
+        subtitle: "Construire une approche d'observabilité multi-cloud.",
+        buttons: [
+            { text: "View Demo", class: "primary", link: "#" },
+            { text: "Read Documentation", class: "secondary", link: "https://drive.google.com/drive/folders/1z2bl-DILUcrs7brIxgNK64UzEsLBMS17?usp=drive_link" }
         ], 
-        "images": [ 
+        images: [ 
             "Pictures/OBSERVIT_1.png", 
             "Pictures/OBSERVIT_2.png" 
         ], 
-        "features": {
-            "heading": "Points clés du projet ObservIT",
-            "subheading": "Développer une visibilité complète et intelligente sur les environnements multi-cloud.",
-            "items": [
-                {
-                    "title": "Analyse intelligente multi-niveaux",
-                    "description": "Développement d'approches d'analyse verticales et horizontales pour le multi-cloud."
-                },
-                {
-                    "title": "Optimisation de modèles IA",
-                    "description": "Amélioration continue des modèles d'IA pour l'observabilité."
-                },
-                {
-                    "title": "Expertise technique",
-                    "description": "Utilisation du Deep Learning, Kubernetes et de la stack DevOps."
-                }
+        features: {
+            heading: "Points clés du projet ObservIT",
+            subheading: "Développer une visibilité complète et intelligente sur les environnements multi-cloud.",
+            items: [
+                { title: "Analyse intelligente multi-niveaux", description: "Développement d'approches d'analyse verticales et horizontales pour le multi-cloud." },
+                { title: "Optimisation de modèles IA", description: "Amélioration continue des modèles d'IA pour l'observabilité." },
+                { title: "Expertise technique", description: "Utilisation du Deep Learning, Kubernetes et de la stack DevOps." }
             ]
         }
     },
     {
-        "id": "project-structurit",
-        "title": "StructurIT",
-        "entity": "Devoteam Research",
-        "subtitle": "Répondre rapidement et précisément aux besoins métiers par l'architecture.",
-        "buttons": [
-            { "text": "View Demo", "class": "primary", "link": "https://aqg4sd.devolab.cloud/" },
-            { "text": "Read Documentation", "class": "secondary", "link": "https://drive.google.com/drive/folders/1zBUEzrxWG90SHqeaO78USDIw5R7BDlKf?usp=drive_link" }
+        id: "project-structurit",
+        title: "StructurIT",
+        category: "Research", // Added category
+        entity: "Devoteam Research",
+        subtitle: "Répondre rapidement et précisément aux besoins métiers par l'architecture.",
+        buttons: [
+            { text: "View Demo", class: "primary", link: "https://aqg4sd.devolab.cloud/" },
+            { text: "Read Documentation", class: "secondary", link: "https://drive.google.com/drive/folders/1zBUEzrxWG90SHqeaO78USDIw5R7BDlKf?usp=drive_link" }
         ],
-        "images": [
-            "Pictures/STRUCTURIT_1.png"
-        ],
-        "features": {
-            "heading": "Points clés du projet StructurIT",
-            "subheading": "Générer des architectures techniques contextualisées grâce à l'IA générative.",
-            "items": [
-                {
-                    "title": "IA Générative appliquée",
-                    "description": "Utilisation de LLM, RAG et Agents pour concevoir des architectures."
-                },
-                {
-                    "title": "Contextualisation SI",
-                    "description": "Garantie que l'architecture répond au système d'information spécifique du client."
-                },
-                {
-                    "title": "Modélisation avancée",
-                    "description": "Exploitation de données semi-structurées pour la modélisation des SI."
-                }
+        images: [ "Pictures/STRUCTURIT_1.png" ],
+        features: {
+            heading: "Points clés du projet StructurIT",
+            subheading: "Générer des architectures techniques contextualisées grâce à l'IA générative.",
+            items: [
+                { title: "IA Générative appliquée", description: "Utilisation de LLM, RAG et Agents pour concevoir des architectures." },
+                { title: "Contextualisation SI", description: "Garantie que l'architecture répond au système d'information spécifique du client." },
+                { title: "Modélisation avancée", description: "Exploitation de données semi-structurées pour la modélisation des SI." }
             ]
         }
     },
     {
-        "id": "project-impact",
-        "title": "IMPACT",
-        "entity": "Devoteam Research",
-        "subtitle": "Intelligent Management, Project and Agility Companion Tool.",
-        "buttons": [
-            { "text": "View Demo", "class": "primary", "link": "https://172.16.200.227/" },
-            { "text": "Read Documentation", "class": "secondary", "link": "https://drive.google.com/drive/folders/1NexuRTUQ77r4j7GIG9YtoNbpduhwbIXr?usp=drive_link" }
+        id: "project-impact",
+        title: "IMPACT",
+        category: "Research", // Added category
+        entity: "Devoteam Research",
+        subtitle: "Intelligent Management, Project and Agility Companion Tool.",
+        buttons: [
+            { text: "View Demo", class: "primary", link: "https://172.16.200.227/" },
+            { text: "Read Documentation", class: "secondary", link: "https://drive.google.com/drive/folders/1NexuRTUQ77r4j7GIG9YtoNbpduhwbIXr?usp=drive_link" }
         ],
-        "images": [
-            "Pictures/IMPACT_1.png"
-        ],
-        "features": {
-            "heading": "Points clés du projet IMPACT",
-            "subheading": "L'IA au service de la fiabilité et de la performance des chefs de projet.",
-            "items": [
-                {
-                    "title": "Assistant IA Agile",
-                    "description": "Développement d'un assistant dédié à la gestion de projet et à l'agilité."
-                },
-                {
-                    "title": "Auto-évaluation",
-                    "description": "Capacité de l'outil à évaluer ses propres résultats (détection d'hallucinations et incomplétude)."
-                },
-                {
-                    "title": "Focus UX/UI",
-                    "description": "Apprentissage et application des principes UX/UI pour l'interface de l'assistant."
-                }
+        images: [ "Pictures/IMPACT_1.png" ],
+        features: {
+            heading: "Points clés du projet IMPACT",
+            subheading: "L'IA au service de la fiabilité et de la performance des chefs de projet.",
+            items: [
+                { title: "Assistant IA Agile", description: "Développement d'un assistant dédié à la gestion de projet et à l'agilité." },
+                { title: "Auto-évaluation", description: "Capacité de l'outil à évaluer ses propres résultats (détection d'hallucinations et incomplétude)." },
+                { title: "Focus UX/UI", description: "Apprentissage et application des principes UX/UI pour l'interface de l'assistant." }
             ]
         }
     },
     {
-        "id": "project-lexia",
-        "title": "Lexia",
-        "entity": "Devoteam Research",
-        "subtitle": "Système intelligent d'analyse de conformité réglementaire pour l'IA.",
-        "buttons": [
-            { "text": "View Demo", "class": "primary", "link": "#" },
-            { "text": "Read Documentation", "class": "secondary", "link": "https://drive.google.com/drive/folders/1CMu9QXF9Gt1cll5Z88WMsbo3pxStfxIg?usp=drive_link" }
+        id: "project-lexia",
+        title: "Lexia",
+        category: "Research", // Added category
+        entity: "Devoteam Research",
+        subtitle: "Système intelligent d'analyse de conformité réglementaire pour l'IA.",
+        buttons: [
+            { text: "View Demo", class: "primary", link: "#" },
+            { text: "Read Documentation", class: "secondary", link: "https://drive.google.com/drive/folders/1CMu9QXF9Gt1cll5Z88WMsbo3pxStfxIg?usp=drive_link" }
         ],
-        "images": [
-            "Pictures/LEXIA_1.png"
-        ],
-        "features": {
-            "heading": "Points clés du projet Lexia",
-            "subheading": "Assurer la conformité des systèmes d'IA de manière fiable et explicable.",
-            "items": [
-                {
-                    "title": "Analyse Juridique par IA",
-                    "description": "Modélisation de la connaissance juridique pour générer des scores de conformité."
-                },
-                {
-                    "title": "Raisonnement explicable",
-                    "description": "Mise en œuvre de l'IA explicable (XAI) pour justifier les analyses de conformité."
-                },
-                {
-                    "title": "Ingénierie des connaissances",
-                    "description": "Utilisation de graphes de connaissances et de NLP pour traiter des corpus complexes."
-                }
+        images: [ "Pictures/LEXIA_1.png" ],
+        features: {
+            heading: "Points clés du projet Lexia",
+            subheading: "Assurer la conformité des systèmes d'IA de manière fiable et explicable.",
+            items: [
+                { title: "Analyse Juridique par IA", description: "Modélisation de la connaissance juridique pour générer des scores de conformité." },
+                { title: "Raisonnement explicable", description: "Mise en œuvre de l'IA explicable (XAI) pour justifier les analyses de conformité." },
+                { title: "Ingénierie des connaissances", description: "Utilisation de graphes de connaissances et de NLP pour traiter des corpus complexes." }
             ]
         }
     },
     {
-        "id": "project-green4all",
-        "title": "GREEN4ALL",
-        "entity": "Devoteam Research",
-        "subtitle": "Rendre accessible les bonnes pratiques de Green IT au plus grand nombre.",
-        "buttons": [
-            { "text": "View Demo", "class": "primary", "link": "#" },
-            { "text": "Read Documentation", "class": "secondary", "link": "https://drive.google.com/drive/folders/1WH2p1auQEabq1Iqjc3OtAXKKZcwo--yi?usp=drive_link" }
+        id: "project-green4all",
+        title: "GREEN4ALL",
+        category: "Research", // Added category
+        entity: "Devoteam Research",
+        subtitle: "Rendre accessible les bonnes pratiques de Green IT au plus grand nombre.",
+        buttons: [
+            { text: "View Demo", class: "primary", link: "#" },
+            { text: "Read Documentation", class: "secondary", link: "https://drive.google.com/drive/folders/1WH2p1auQEabq1Iqjc3OtAXKKZcwo--yi?usp=drive_link" }
         ],
-        "images": [
-            "Pictures/GREEN4ALL_1.png"
-        ],
-        "features": {
-            "heading": "Points clés du projet GREEN4ALL",
-            "subheading": "Un système de conseil expert et adaptatif pour la durabilité numérique.",
-            "items": [
-                {
-                    "title": "Conseil Expert Adaptatif",
-                    "description": "Système s'adaptant au niveau de compréhension de l'interlocuteur."
-                },
-                {
-                    "title": "Contextualisation",
-                    "description": "Prise en compte du contexte spécifique pour recommander les meilleures pratiques."
-                },
-                {
-                    "title": "Aide à la décision",
-                    "description": "Utilisation de l'IA générative pour faciliter les choix écoresponsables."
-                }
+        images: [ "Pictures/GREEN4ALL_1.png" ],
+        features: {
+            heading: "Points clés du projet GREEN4ALL",
+            subheading: "Un système de conseil expert et adaptatif pour la durabilité numérique.",
+            items: [
+                { title: "Conseil Expert Adaptatif", description: "Système s'adaptant au niveau de compréhension de l'interlocuteur." },
+                { title: "Contextualisation", description: "Prise en compte du contexte spécifique pour recommander les meilleures pratiques." },
+                { title: "Aide à la décision", description: "Utilisation de l'IA générative pour faciliter les choix écoresponsables." }
             ]
         }
     },
     {
-        "id": "project-trustchain",
-        "title": "TrustChain",
-        "entity": "Devoteam Research",
-        "subtitle": "Decentralized Autonomous Cyberdefense Platform for AI.",
-        "buttons": [
-            { "text": "View Demo", "class": "primary", "link": "#" },
-            { "text": "Read Documentation", "class": "secondary", "link": "https://drive.google.com/drive/folders/1706Zuhp6Lb1eBMkDOFcgZCN5iIZ8VzDu?usp=drive_link" }
+        id: "project-trustchain",
+        title: "TrustChain",
+        category: "Research", // Added category
+        entity: "Devoteam Research",
+        subtitle: "Decentralized Autonomous Cyberdefense Platform for AI.",
+        buttons: [
+            { text: "View Demo", class: "primary", link: "#" },
+            { text: "Read Documentation", class: "secondary", link: "https://drive.google.com/drive/folders/1706Zuhp6Lb1eBMkDOFcgZCN5iIZ8VzDu?usp=drive_link" }
         ],
-        "images": [
-            "Pictures/TRUSTCHAIN_1.png"
-        ],
-        "features": {
-            "heading": "Points clés du projet TrustChain",
-            "subheading": "Sécuriser les modèles d'IA via la décentralisation et la blockchain.",
-            "items": [
-                {
-                    "title": "Intégrité par la Blockchain",
-                    "description": "Inscription de chaque version de modèle dans une blockchain distribuée."
-                },
-                {
-                    "title": "Neutralisation Autonome",
-                    "description": "Agents intelligents capables de détecter et neutraliser les menaces internes/externes."
-                },
-                {
-                    "title": "Conformité Européenne",
-                    "description": "Garantie de souveraineté conforme au RGPD et à l'IA Act européen."
-                }
+        images: [ "Pictures/TRUSTCHAIN_1.png" ],
+        features: {
+            heading: "Points clés du projet TrustChain",
+            subheading: "Sécuriser les modèles d'IA via la décentralisation et la blockchain.",
+            items: [
+                { title: "Intégrité par la Blockchain", description: "Inscription de chaque version de modèle dans une blockchain distribuée." },
+                { title: "Neutralisation Autonome", description: "Agents intelligents capables de détecter et neutraliser les menaces internes/externes." },
+                { title: "Conformité Européenne", description: "Garantie de souveraineté conforme au RGPD et à l'IA Act européen." }
             ]
         }
     },
     {
-        "id": "project-devolab",
-        "title": "DevoLab",
-        "entity": "Devoteam Research",
-        "subtitle": "Le Learning Center pour héberger les PoC et les environnements de formation.",
-        "buttons": [
-            { "text": "View Demo", "class": "primary", "link": "#" },
-            { "text": "Read Documentation", "class": "secondary", "link": "#" }
+        id: "project-devolab",
+        title: "DevoLab",
+        category: "Research", // Added category
+        entity: "Devoteam Research",
+        subtitle: "Le Learning Center pour héberger les PoC et les environnements de formation.",
+        buttons: [
+            { text: "View Demo", class: "primary", link: "#" },
+            { text: "Read Documentation", class: "secondary", link: "#" }
         ],
-        "images": [
-            "Pictures/DEVOLAB_1.png"
-        ],
-        "features": {
-            "heading": "Services du DevoLab",
-            "subheading": "Une infrastructure dédiée à l'innovation et à l'apprentissage technologique.",
-            "items": [
-                {
-                    "title": "Hébergement de PoC",
-                    "description": "Support technique pour les besoins en Proof of Concept scientifiques des projets de recherche."
-                },
-                {
-                    "title": "Environnements de formation",
-                    "description": "Construction d'environnements dédiés à l'apprentissage des nouvelles technologies."
-                },
-                {
-                    "title": "Démos Fournisseurs",
-                    "description": "Plateforme d'accueil pour les démonstrations de produits partenaires."
-                },
-                {
-                    "title": "Stack Technique",
-                    "description": "Maîtrise de Suse Rancher, Suse Harvester, Kubernetes et de la stack DevOps."
-                }
+        images: [ "Pictures/DEVOLAB_1.png" ],
+        features: {
+            heading: "Services du DevoLab",
+            subheading: "Une infrastructure dédiée à l'innovation et à l'apprentissage technologique.",
+            items: [
+                { title: "Hébergement de PoC", description: "Support technique pour les besoins en Proof of Concept scientifiques des projets de recherche." },
+                { title: "Environnements de formation", description: "Construction d'environnements dédiés à l'apprentissage des nouvelles technologies." },
+                { title: "Démos Fournisseurs", description: "Plateforme d'accueil pour les démonstrations de produits partenaires." },
+                { title: "Stack Technique", description: "Maîtrise de Suse Rancher, Suse Harvester, Kubernetes et de la stack DevOps." }
             ]
         }
     },
     {
-        "id": "project-improve",
-        "title": "IMPROVE",
-        "entity": "Devoteam Research",
-        "subtitle": "Optimisation des propositions de missions basée sur les aspirations et l'expertise.",
-        "buttons": [
-            { "text": "View Demo", "class": "primary", "link": "https://improve.devolab.cloud" },
-            { "text": "Read Documentation", "class": "secondary", "link": "https://drive.google.com/drive/folders/1EUAUjik_tW3KM0mnIj31R0zj6ZP3J2EV?usp=drive_link" }
+        id: "project-improve",
+        title: "IMPROVE",
+        category: "Research", // Added category
+        entity: "Devoteam Research",
+        subtitle: "Optimisation des propositions de missions basée sur les aspirations et l'expertise.",
+        buttons: [
+            { text: "View Demo", class: "primary", link: "https://improve.devolab.cloud" },
+            { text: "Read Documentation", class: "secondary", link: "https://drive.google.com/drive/folders/1EUAUjik_tW3KM0mnIj31R0zj6ZP3J2EV?usp=drive_link" }
         ],
-        "images": [
-            "Pictures/IMPROVE_1.png"
-        ],
-        "features": {
-            "heading": "Capacités du système IMPROVE",
-            "subheading": "Réduire l'effort humain tout en maximisant l'épanouissement des consultants.",
-            "items": [
-                {
-                    "title": "Scoring Qualitatif & Quantitatif",
-                    "description": "Génération de scores complexes à partir de données hétérogènes et déstructurées."
-                },
-                {
-                    "title": "Extraction d'informations implicites",
-                    "description": "Détection des préférences et compétences sectorielles non explicitement écrites."
-                },
-                {
-                    "title": "Intelligence Artificielle",
-                    "description": "Utilisation d'IA générative, de LLM et d'agents pour le traitement de données."
-                }
+        images: [ "Pictures/IMPROVE_1.png" ],
+        features: {
+            heading: "Capacités du système IMPROVE",
+            subheading: "Réduire l'effort humain tout en maximisant l'épanouissement des consultants.",
+            items: [
+                { title: "Scoring Qualitatif & Quantitatif", description: "Génération de scores complexes à partir de données hétérogènes et déstructurées." },
+                { title: "Extraction d'informations implicites", description: "Détection des préférences et compétences sectorielles non explicitement écrites." },
+                { title: "Intelligence Artificielle", description: "Utilisation d'IA générative, de LLM et d'agents pour le traitement de données." }
             ]
         }
     },
     {
-        "id": "project-ai4value",
-        "title": "AI4Value",
-        "entity": "Devoteam Research",
-        "subtitle": "Génération automatique de cas d'usage IA à fort potentiel.",
-        "buttons": [
-            { "text": "View Demo", "class": "primary", "link": "#" },
-            { "text": "Read Documentation", "class": "secondary", "link": "https://drive.google.com/drive/folders/1Q6ZPCdE_CgdS4iEY_5uuxIAsbx2tVj98?usp=drive_link" }
+        id: "project-ai4value",
+        title: "AI4Value",
+        category: "Research", // Added category
+        entity: "Devoteam Research",
+        subtitle: "Génération automatique de cas d'usage IA à fort potentiel.",
+        buttons: [
+            { text: "View Demo", class: "primary", link: "#" },
+            { text: "Read Documentation", class: "secondary", link: "https://drive.google.com/drive/folders/1Q6ZPCdE_CgdS4iEY_5uuxIAsbx2tVj98?usp=drive_link" }
         ],
-        "images": [
-            "Pictures/AI4VALUE_1.png"
-        ],
-        "features": {
-            "heading": "Objectifs d'AI4Value",
-            "subheading": "Transformer les données brutes d'entreprise en générateurs de valeur via l'IA.",
-            "items": [
-                {
-                    "title": "Conseil Expert",
-                    "description": "Système d'analyse capable de recommander des cas d'usage pertinents."
-                },
-                {
-                    "title": "Analyse de Données Brutes",
-                    "description": "Exploitation de données hétérogènes et variées pour l'aide à la décision."
-                },
-                {
-                    "title": "Technologies Clés",
-                    "description": "Mise en œuvre d'IA générative et de LLM pour la recommandation."
-                }
+        images: [ "Pictures/AI4VALUE_1.png" ],
+        features: {
+            heading: "Objectifs d'AI4Value",
+            subheading: "Transformer les données brutes d'entreprise en générateurs de valeur via l'IA.",
+            items: [
+                { title: "Conseil Expert", description: "Système d'analyse capable de recommander des cas d'usage pertinents." },
+                { title: "Analyse de Données Brutes", description: "Exploitation de données hétérogènes et variées pour l'aide à la décision." },
+                { title: "Technologies Clés", description: "Mise en œuvre d'IA générative et de LLM pour la recommandation." }
             ]
         }
     },
     {
-        "id": "project-greensoft",
-        "title": "GreenSoft",
-        "entity": "Devoteam Research",
-        "subtitle": "Développement d'applications éco-conçues avec limitation des tests.",
-        "buttons": [
-            { "text": "View Demo", "class": "primary", "link": "#" },
-            { "text": "Read Documentation", "class": "secondary", "link": "https://drive.google.com/drive/folders/1zJ_YBUXd019fPI4Ll2kDJ7XAa2yy1X3s?usp=drive_link" }
+        id: "project-greensoft",
+        title: "GreenSoft",
+        category: "Research", // Added category
+        entity: "Devoteam Research",
+        subtitle: "Développement d'applications éco-conçues avec limitation des tests.",
+        buttons: [
+            { text: "View Demo", class: "primary", link: "#" },
+            { text: "Read Documentation", class: "secondary", link: "https://drive.google.com/drive/folders/1zJ_YBUXd019fPI4Ll2kDJ7XAa2yy1X3s?usp=drive_link" }
         ],
-        "images": [
-            "Pictures/GREENSOFT_1.png"
-        ],
-        "features": {
-            "heading": "Innovation GreenSoft",
-            "subheading": "Générer et évaluer des alternatives de codage sans exécution.",
-            "items": [
-                {
-                    "title": "Générateur de Code Green",
-                    "description": "IA capable de générer et recommander les meilleures alternatives de codage éco-responsables."
-                },
-                {
-                    "title": "Frugalité de Test",
-                    "description": "Limitation des tests nécessaires pour évaluer l'impact environnemental du code."
-                },
-                {
-                    "title": "Éco-conception",
-                    "description": "Focus sur les services numériques durables et l'IA générative."
-                }
+        images: [ "Pictures/GREENSOFT_1.png" ],
+        features: {
+            heading: "Innovation GreenSoft",
+            subheading: "Générer et évaluer des alternatives de codage sans exécution.",
+            items: [
+                { title: "Générateur de Code Green", description: "IA capable de générer et recommander les meilleures alternatives de codage éco-responsables." },
+                { title: "Frugalité de Test", description: "Limitation des tests nécessaires pour évaluer l'impact environnemental du code." },
+                { title: "Éco-conception", description: "Focus sur les services numériques durables et l'IA générative." }
             ]
         }
     },
     {
-        "id": "project-sustainable",
-        "title": "SustAInable",
-        "entity": "Devoteam Research",
-        "subtitle": "Choisir l'approche technologique la plus frugale pour chaque besoin.",
-        "buttons": [
-            { "text": "View Demo", "class": "primary", "link": "#" },
-            { "text": "Read Documentation", "class": "secondary", "link": "https://drive.google.com/drive/folders/19MGRtb1QkNgj_sLB8sgmwFs6Jzi6QGlr?usp=drive_link" }
+        id: "project-sustainable",
+        title: "SustAInable",
+        category: "Research", // Added category
+        entity: "Devoteam Research",
+        subtitle: "Choisir l'approche technologique la plus frugale pour chaque besoin.",
+        buttons: [
+            { text: "View Demo", class: "primary", link: "#" },
+            { text: "Read Documentation", class: "secondary", link: "https://drive.google.com/drive/folders/19MGRtb1QkNgj_sLB8sgmwFs6Jzi6QGlr?usp=drive_link" }
         ],
-        "images": [
-            "Pictures/SUSTAINABLE_1.png"
-        ],
-        "features": {
-            "heading": "Principes de SustAInable",
-            "subheading": "Guider vers une solution IA ou non-IA selon des critères de frugalité.",
-            "items": [
-                {
-                    "title": "Arbitrage Technologique",
-                    "description": "Identification des cas où l'usage de l'IA n'est pas indispensable."
-                },
-                {
-                    "title": "Conseil Expert en Frugalité",
-                    "description": "Orientation de l'utilisateur en fonction de ses contraintes spécifiques."
-                },
-                {
-                    "title": "Green IT",
-                    "description": "Engagement pour la durabilité et l'optimisation des ressources."
-                }
+        images: [ "Pictures/SUSTAINABLE_1.png" ],
+        features: {
+            heading: "Principes de SustAInable",
+            subheading: "Guider vers une solution IA ou non-IA selon des critères de frugalité.",
+            items: [
+                { title: "Arbitrage Technologique", description: "Identification des cas où l'usage de l'IA n'est pas indispensable." },
+                { title: "Conseil Expert en Frugalité", description: "Orientation de l'utilisateur en fonction de ses contraintes spécifiques." },
+                { title: "Green IT", description: "Engagement pour la durabilité and l'optimisation des ressources." }
             ]
         }
     },
     {
-        "id": "project-sparc",
-        "title": "SPARC",
-        "entity": "Devoteam Research",
-        "subtitle": "Recherche d'information précise à partir de données fragmentées.",
-        "buttons": [
-            { "text": "View Demo", "class": "primary", "link": "#" },
-            { "text": "Read Documentation", "class": "secondary", "link": "https://drive.google.com/drive/folders/1lvSX0jjanj4k_pUVVFcB7NKVA7ZiG3he?usp=drive_link" }
+        id: "project-sparc",
+        title: "SPARC",
+        category: "Research", // Added category
+        entity: "Devoteam Research",
+        subtitle: "Recherche d'information précise à partir de données fragmentées.",
+        buttons: [
+            { text: "View Demo", class: "primary", link: "#" },
+            { text: "Read Documentation", class: "secondary", link: "https://drive.google.com/drive/folders/1lvSX0jjanj4k_pUVVFcB7NKVA7ZiG3he?usp=drive_link" }
         ],
-        "images": [
-            "Pictures/SPARC_1.png"
-        ],
-        "features": {
-            "heading": "Atouts de SPARC",
-            "subheading": "Maîtriser le 'Small Data' pour une extraction sémantique riche.",
-            "items": [
-                {
-                    "title": "Enrichissement Contextuel",
-                    "description": "Création de modèles d'enrichissement (mots-clés, sémantique) pour données incomplètes."
-                },
-                {
-                    "title": "Analyse d'Images et Schémas",
-                    "description": "Optimisation de la recherche sur des légendes courtes associées à des visuels."
-                },
-                {
-                    "title": "Small Data Expertise",
-                    "description": "Extraction et génération d'information dans des contextes de données restreints."
-                }
+        images: [ "Pictures/SPARC_1.png" ],
+        features: {
+            heading: "Atouts de SPARC",
+            subheading: "Maîtriser le 'Small Data' pour une extraction sémantique riche.",
+            items: [
+                { title: "Enrichissement Contextuel", description: "Création de modèles d'enrichissement (mots-clés, sémantique) pour données incomplètes." },
+                { title: "Analyse d'Images et Schémas", description: "Optimisation de la recherche sur des légendes courtes associées à des visuels." },
+                { title: "Small Data Expertise", description: "Extraction et génération d'information dans des contextes de données restreints." }
             ]
         }
     },
     {
-        "id": "project-aisport",
-        "title": "AIsport",
-        "entity": "Devoteam Research",
-        "subtitle": "Système intelligent et adaptatif pour les professionnels du sport.",
-        "buttons": [
-            { "text": "View Demo", "class": "primary", "link": "#" },
-            { "text": "Read Documentation", "class": "secondary", "link": "https://drive.google.com/drive/folders/126rSVL32JnT5fTnz1St-yzaK0nRmrtm6?usp=drive_link" }
+        id: "project-aisport",
+        title: "AIsport",
+        category: "Research", // Added category
+        entity: "Devoteam Research",
+        subtitle: "Système intelligent et adaptatif pour les professionnels du sport.",
+        buttons: [
+            { text: "View Demo", class: "primary", link: "#" },
+            { text: "Read Documentation", class: "secondary", link: "https://drive.google.com/drive/folders/126rSVL32JnT5fTnz1St-yzaK0nRmrtm6?usp=drive_link" }
         ],
-        "images": [
-            "Pictures/AISPORT_1.png"
-        ],
-        "features": {
-            "heading": "Fonctionnalités AIsport",
-            "subheading": "Recommander des architectures IA adaptées aux contraintes du sport.",
-            "items": [
-                {
-                    "title": "Analyse Contextuelle",
-                    "description": "Analyse des use cases sportifs pour proposer une architecture IA sur mesure."
-                },
-                {
-                    "title": "Gestion des Incertitudes",
-                    "description": "Optimisation des modules face aux données manquantes ou absentes dans le sport."
-                },
-                {
-                    "title": "Système de Recommandation",
-                    "description": "Utilisation de LLM et d'interfaces UX/UI pour faciliter l'usage pro."
-                }
+        images: [ "Pictures/AISPORT_1.png" ],
+        features: {
+            heading: "Fonctionnalités AIsport",
+            subheading: "Recommander des architectures IA adaptées aux contraintes du sport.",
+            items: [
+                { title: "Analyse Contextuelle", description: "Analyse des use cases sportifs pour proposer une architecture IA sur mesure." },
+                { title: "Gestion des Incertitudes", description: "Optimisation des modules face aux données manquantes ou absentes dans le sport." },
+                { title: "Système de Recommandation", description: "Utilisation de LLM et d'interfaces UX/UI pour faciliter l'usage pro." }
             ]
         }
     },
     {
-        "id": "project-aurix",
-        "title": "Aurix",
-        "entity": "Devoteam Research",
-        "subtitle": "Intelligence artificielle financière modulaire pour le pilotage des risques.",
-        "buttons": [
-            { "text": "View Demo", "class": "primary", "link": "#" },
-            { "text": "Read Documentation", "class": "secondary", "link": "https://drive.google.com/drive/folders/1jswJ1zb1UVXkDC3X5NrRGtpY0YeNoGeC?usp=drive_link" }
+        id: "project-aurix",
+        title: "Aurix",
+        category: "Research", // Added category
+        entity: "Devoteam Research",
+        subtitle: "Intelligence artificielle financière modulaire pour le pilotage des risques.",
+        buttons: [
+            { text: "View Demo", class: "primary", link: "#" },
+            { text: "Read Documentation", class: "secondary", link: "https://drive.google.com/drive/folders/1jswJ1zb1UVXkDC3X5NrRGtpY0YeNoGeC?usp=drive_link" }
         ],
-        "images": [
-            "Pictures/AURIX_1.png"
-        ],
-        "features": {
-            "heading": "Composants d'Aurix",
-            "subheading": "Anticiper les dynamiques de marché via l'apprentissage par renforcement.",
-            "items": [
-                {
-                    "title": "Fusion de Données Hétérogènes",
-                    "description": "Ingestion de séries temporelles, signaux narratifs et actualités économiques."
-                },
-                {
-                    "title": "Anticipation des Régimes",
-                    "description": "Identification proactive des crises et paniques via la logique modale temporelle."
-                },
-                {
-                    "title": "Recommandation Stratégique",
-                    "description": "Agents symboliques pour orienter l'investissement avec rapports traçables."
-                },
-                {
-                    "title": "Méthodes Avancées",
-                    "description": "Usage combiné de Reinforcement Learning (RL), Deep Learning et NLP."
-                }
+        images: [ "Pictures/AURIX_1.png" ],
+        features: {
+            heading: "Composants d'Aurix",
+            subheading: "Anticiper les dynamiques de marché via l'apprentissage par renforcement.",
+            items: [
+                { title: "Fusion de Données Hétérogènes", description: "Ingestion de séries temporelles, signaux narratifs et actualités économiques." },
+                { title: "Anticipation des Régimes", description: "Identification proactive des crises et paniques via la logique modale temporelle." },
+                { title: "Recommandation Stratégique", description: "Agents symboliques pour orienter l'investissement avec rapports traçables." },
+                { title: "Méthodes Avancées", description: "Usage combiné de Reinforcement Learning (RL), Deep Learning et NLP." }
             ]
         }
     }
 ];
+// 2. Function to dynamically generate and display the projects
+       const categories = ['Research', 'Administrative', 'Client'];
 
-        // 2. Function to dynamically generate and display the projects
-        function displayProjects(projectList) {
-            const projectsContainer = document.getElementById('projects-container');
-            const projectsNavContainer = document.getElementById('projects-nav-container');
+/* --- COMPLETE TIERED PROJECT RENDERING --- */
 
-            if (!projectsContainer || !projectsNavContainer) return;
+function displayProjects(list) {
+    const container = document.getElementById('projects-container');
+    const navContainer = document.querySelector('.projects-nav .container');
+    const categories = ['Research', 'Administrative', 'Client'];
 
-            // Clear any existing static content
-            projectsContainer.innerHTML = '';
-            projectsNavContainer.innerHTML = '';
+    // 1. Setup Navigation States
+    const categoryNav = document.createElement('ul');
+    categoryNav.className = 'projects-nav-links';
+    categoryNav.id = 'category-nav';
 
-            projectList.forEach((project, index) => {
-                // --- Create the navigation link ---
-                const navLink = document.createElement('li');
-                navLink.innerHTML = `<a href="#${project.id}" class="${index === 0 ? 'active' : ''}">${project.title}</a>`;
-                projectsNavContainer.appendChild(navLink);
+    const projectNav = document.createElement('ul');
+    projectNav.className = 'projects-nav-links hidden-nav';
+    projectNav.id = 'project-specific-nav';
 
-                // --- Create the project article ---
-                const article = document.createElement('article');
-                article.className = 'project-item anim-fade-in';
-                article.id = project.id;
+    // 2. Build Category Level Menu
+    categories.forEach(cat => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = "#";
+        a.textContent = cat;
+        a.onclick = (e) => {
+            e.preventDefault();
+            showProjectLinks(cat, list);
+        };
+        li.appendChild(a);
+        categoryNav.appendChild(li);
+    });
 
-                // Map features data to HTML
-                const featuresHTML = project.features.items.map(feature => `
-                    <div class="feature-item">
-                        <div class="icon">i</div>
-                        <div>
-                            <h5>${feature.title}</h5>
-                            <p>${feature.description}</p>
-                        </div>
-                    </div>
-                `).join('');
-                
-                // Map buttons data to HTML
-                const buttonsHTML = project.buttons.map(button => `
-                    <a href="${button.link}" class="button ${button.class}">${button.text}</a>
-                `).join('');
+    navContainer.innerHTML = ''; 
+    navContainer.appendChild(categoryNav);
+    navContainer.appendChild(projectNav);
 
-                article.innerHTML = `
-                    <div class="project-hero">
-                            <div class="project-title-header">
-                        <h3>${project.title}</h3>
-                        <span class="project-entity">${project.entity}</span>
-                    </div>
-                        <p>${project.subtitle}</p>
-                        <div class="buttons">${buttonsHTML}</div>
-                    </div>
-                    <div class="project-images">
-                        <div class="img-placeholder"><img src="${project.images[0]}" alt="${project.title} screenshot 1"></div>
-                        <div class="img-placeholder"><img src="${project.images[1]}" alt="${project.title} screenshot 2"></div>
-                    </div>
-                    <div class="project-features">
-                        <h4>${project.features.heading}</h4>
-                        <p class="subheading">${project.features.subheading}</p>
-                        <div class="features-grid">${featuresHTML}</div>
-                    </div>
-                `;
-                projectsContainer.appendChild(article);
+    // 3. Render All Project Articles
+    container.innerHTML = '';
+    list.forEach((proj) => {
+        const art = document.createElement('article');
+        art.id = proj.id;
+        art.className = 'project-item anim-fade-in';
+
+        // --- DYNAMIC BUTTONS ---
+        const buttonsHTML = proj.buttons.map(btn => `
+            <a href="${btn.link}" class="button ${btn.class}" target="_blank">${btn.text}</a>
+        `).join('');
+
+        // --- DYNAMIC FEATURES ---
+        const featuresHTML = proj.features.items.map(item => `
+            <div class="feature-item">
+                <div class="icon">i</div>
+                <div>
+                    <h5>${item.title}</h5>
+                    <p>${item.description}</p>
+                </div>
+            </div>
+        `).join('');
+
+        art.innerHTML = `
+            <div class="project-hero">
+                <div class="project-title-header">
+                    <h3>${proj.title}</h3>
+                    <span class="project-entity">${proj.entity}</span>
+                </div>
+                <p>${proj.subtitle}</p>
+                <div class="buttons">${buttonsHTML}</div>
+            </div>
+            <div class="project-images">
+                <div class="img-placeholder"><img src="${proj.images[0]}" alt=""></div>
+                <div class="img-placeholder"><img src="${proj.images[1] || proj.images[0]}" alt=""></div>
+            </div>
+            <div class="project-features">
+                <h4>${proj.features.heading}</h4>
+                <p class="subheading">${proj.features.subheading}</p>
+                <div class="features-grid">${featuresHTML}</div>
+            </div>
+        `;
+        container.appendChild(art);
+    });
+}
+
+function showProjectLinks(category, allProjects) {
+    const categoryNav = document.getElementById('category-nav');
+    const projectNav = document.getElementById('project-specific-nav');
+    
+    categoryNav.classList.add('hidden-nav');
+    projectNav.classList.remove('hidden-nav');
+    projectNav.innerHTML = '';
+
+    // Add Return Button
+    const liReturn = document.createElement('li');
+    const returnBtn = document.createElement('button');
+    returnBtn.className = 'return-button';
+    returnBtn.textContent = '← Categories';
+    returnBtn.onclick = () => {
+        projectNav.classList.add('hidden-nav');
+        categoryNav.classList.remove('hidden-nav');
+    };
+    liReturn.appendChild(returnBtn);
+    projectNav.appendChild(liReturn);
+
+    // Filter projects for this category and create links
+    const filtered = allProjects.filter(p => p.category === category);
+    filtered.forEach((proj) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `#${proj.id}`;
+        a.textContent = proj.title;
+        a.onclick = function(e) {
+            e.preventDefault();
+            const targetEl = document.querySelector(`#${proj.id}`);
+            const mainHeaderHeight = document.querySelector('.main-header').offsetHeight;
+            const projectNavHeight = document.querySelector('.projects-nav').offsetHeight;
+            const pos = targetEl.getBoundingClientRect().top + window.pageYOffset - (mainHeaderHeight + projectNavHeight);
+            
+            window.scrollTo({ top: pos, behavior: 'smooth' });
+            
+            projectNav.querySelectorAll('a').forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+        };
+        li.appendChild(a);
+        projectNav.appendChild(li);
+    });
+}
+
+
+        /* --- INTERSECTION OBSERVER (FADE IN) --- */
+        const animObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.anim-fade-in').forEach(el => animObserver.observe(el));
+
+        /* --- MAIN NAV: ACTIVE STATE & SMOOTH SCROLL --- */
+        const mainNavLinks = document.querySelectorAll('.nav-links a');
+        const sections = document.querySelectorAll('section[id]');
+
+        // 1. Observer for Header Active Links
+        const mainNavObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    mainNavLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) link.classList.add('active');
+                    });
+                }
             });
-        }
-
+        }, { rootMargin: '-150px 0px -60% 0px' });
+        sections.forEach(s => mainNavObserver.observe(s));
         // 3. Call the function and re-initialize listeners
         displayProjects(projectsData);
 
