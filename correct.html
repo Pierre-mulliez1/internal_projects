@@ -1,0 +1,2013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <base target="_top">
+    <title>Devoteam Consultant Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- BRAND VARIABLES --- */
+        :root {
+            /* Primary Colors */
+            --red-poppy: #f8485e;       
+            --dark-grey: #3c3c3a;       
+            --white: #ffffff;           
+
+            /* Secondary Colors */
+            --poppy-light: #fca2ae;     
+            --aqua: #d7ebe7;            
+            --beige: #efeadc;           
+            
+            /* Accent Colors */
+            --intense-fire: #fcc354;   
+            --poppy-lighter: #fddade;  
+            --fresh-mint: #5ab891;      
+            --blue-lagoon: #4a8cca;     
+
+            /* Functional Settings */
+            --bg-color: var(--white);   /* Default background */
+            --sidebar-bg: var(--white);
+            --text-color: var(--dark-grey); /* Never black [cite: 493] */
+        }
+
+        /* --- GLOBAL STYLES --- */
+           body {
+            font-family: 'Montserrat', sans-serif; /* [cite: 247] */
+            background-color: var(--white); /* Cleaner look */
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- GRAPHIC DEVICE: Cropped Circle [cite: 395, 396] --- */
+        .brand-circle {
+            position: fixed;
+            bottom: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background-color: var(--poppy-light); /* [cite: 407] */
+            border-radius: 50%;
+            opacity: 0.4;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* Optional second circle for dynamic composition [cite: 408] */
+        .brand-circle-small {
+            position: fixed;
+            top: -100px;
+            right: 20%;
+            width: 300px;
+            height: 300px;
+            background-color: var(--aqua); /* Secondary color variation */
+            border-radius: 50%;
+            opacity: 0.3;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Ajustement de transparence pour les colonnes pour voir le fond */
+        .column {
+            background-color: rgba(255, 255, 255, 0.95); /* Légèrement transparent */
+            /* ... le reste de vos styles .column ... */
+        }
+
+        /* --- SIDEBAR NAVIGATION --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            border-right: 1px solid var(--beige); /* Subtle separator */
+            z-index: 10;
+        }
+
+        .logo-area {
+            font-weight: 700;
+            font-size: 26px;
+            margin-bottom: 60px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--dark-grey);
+        }
+        
+        .logo-mark { 
+            color: var(--red-poppy); 
+            font-size: 34px; 
+            line-height: 1;
+        }
+
+        .nav-item {
+            padding: 16px 20px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            border-radius: 50px; /* Rounded pill shape style */
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--dark-grey);
+        }
+
+        .nav-item:hover {
+            background-color: var(--aqua); /* Secondary color hover [cite: 459] */
+            color: var(--dark-grey);
+        }
+
+        .nav-item.active {
+            background-color: var(--red-poppy); /* Primary color active [cite: 468] */
+            color: var(--white);
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(248, 72, 94, 0.3);
+        }
+
+        /* --- MAIN CONTENT AREA --- */
+        .main-content {
+            flex-grow: 1;
+            padding: 50px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .page-section {
+    display: none; 
+    animation: fadeIn 0.5s ease;
+    max-width: 1200px;
+    margin-left: 30px ; 
+    margin-right: auto ; 
+    align-self: flex-start !important; 
+    text-align: left;
+}
+
+.page-section.active { 
+    display: block; 
+}
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { 
+            font-weight: 700; 
+            font-size: 36px; 
+            margin-bottom: 10px; 
+            color: var(--dark-grey);
+        }
+        
+        h2 { 
+            font-weight: 400; /* Montserrat Light/Regular mix [cite: 249] */
+            font-size: 20px; 
+            color: var(--red-poppy); /* Using primary for headers [cite: 258] */
+            margin-top: 0; 
+            margin-bottom: 40px; 
+        }
+
+        /* --- KANBAN BOARD STYLES --- */
+        .board {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .column {
+            background-color: var(--white);
+            width: 340px;
+            min-height: 600px;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03); /* Soft, premium shadow */
+            border: 1px solid var(--beige);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .column h3 {
+            text-transform: uppercase;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            margin-top: 0;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--aqua);
+            color: var(--dark-grey);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-list { flex-grow: 1; min-height: 150px; }
+
+        .task {
+            background-color: var(--white);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--beige);
+            cursor: grab;
+            transition: all 0.2s ease;
+            border-left: 5px solid transparent;
+            position: relative;
+        }
+
+        .task:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(60, 60, 58, 0.08);
+            border-color: transparent;
+        }
+
+        .task strong { 
+            display: block; 
+            font-size: 16px; 
+            margin-bottom: 8px; 
+            color: var(--dark-grey);
+        }
+        
+        .task span { 
+            font-size: 13px; 
+            color: #888; 
+            font-weight: 300;
+        }
+
+        /* Status Colors using Accent Palette [cite: 522] */
+        .task[data-status="En Mission"] { border-left-color: var(--fresh-mint); }
+        .task[data-status="Inter-contrat"] { border-left-color: var(--red-poppy); }
+        .task[data-status="Projet Recherche"] { border-left-color: var(--blue-lagoon); }
+        .task[data-status="Engagement Devoteam"] { border-left-color: var(--poppy-lighter); }
+        
+        /* --- FLOATING ACTION BUTTON (FAB) --- */
+     /* --- HEADER ALIGNMENT --- */
+        .header-row {
+            display: flex;
+            align-items: center;  
+            justify-content: flex-start; 
+            gap: 20px;           
+            margin-bottom: 10px;
+        }
+
+        .header-row h1 {
+            margin-bottom: 0; 
+        }
+
+        /* --- UPDATED BUTTON STYLE --- */
+        .fab {
+            position: relative;  
+            width: 50px;        
+            height: 50px;
+            background-color: var(--red-poppy);
+            color: var(--white);
+            border-radius: 50%;
+            border: none;
+            font-size: 28px;
+            font-weight: 300;
+            box-shadow: 0 4px 15px rgba(248, 72, 94, 0.4);
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0; 
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(90deg);
+            background-color: #d63d50;
+        }
+
+        /* --- MODAL / FORM STYLES --- */
+        .modal-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(3px);
+        }
+
+        .modal {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 16px;
+            width: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark-grey); }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--beige);
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            box-sizing: border-box; /* Fixes padding width issues */
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-cancel {
+            background: transparent;
+            border: 1px solid var(--beige);
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+
+        /* --- CONTENT CARDS --- */
+        .content-card {
+            background: var(--white);
+            padding: 50px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+            border: 1px solid var(--beige);
+            max-width: 900px;
+        }
+        
+        button.cta {
+            background-color: var(--red-poppy);
+            color: var(--white);
+            border: none;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        button.cta:hover { 
+            background-color: #d63d50; /* Slightly darker shade for hover */
+        }
+        
+        /* Select styling */
+        select {
+            padding: 12px;
+            font-family: Montserrat;
+            border: 1px solid var(--beige);
+            border-radius: 8px;
+            color: var(--dark-grey);
+            outline: none;
+            width: 100%;
+            max-width: 300px;
+        }
+        select:focus { border-color: var(--red-poppy); }
+      
+      /* Modal Overlay - Background */
+      .edit-modal-overlay {
+        display: none; /* Hidden by default */
+        position: fixed;
+        top: 0; 
+        left: 0;
+        width: 100%; 
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+        z-index: 2000; /* Ensures it sits on top of everything */
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(2px); /* Optional: adds a nice blur to background */
+      }
+
+      /* Modal Content Box */
+      .edit-modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 300px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        font-family: Arial, sans-serif;
+        animation: fadeIn 0.2s ease-in-out;
+      }
+
+      /* Form Styling */
+      .edit-form-group { 
+        margin-bottom: 15px; 
+      }
+
+      .edit-form-group label { 
+        display: block; 
+        font-weight: bold; 
+        margin-bottom: 5px; 
+        font-size: 0.9em;
+        color: #333;
+      }
+
+      .edit-form-group input { 
+        width: 100%; 
+        padding: 8px; 
+        box-sizing: border-box; 
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      /* Disabled Input Styling (Greyed out) */
+      .edit-disabled-input { 
+        background-color: #f5f5f5; 
+        color: #666; 
+        border: 1px solid #ddd; 
+        cursor: not-allowed;
+      }
+
+      /* Buttons Container */
+      .edit-modal-buttons { 
+        display: flex; 
+        justify-content: flex-end; 
+        gap: 10px; 
+        margin-top: 20px;
+      }
+
+      /* Save Button */
+      .edit-btn-save { 
+        background-color: #4CAF50; 
+        color: white; 
+        border: none; 
+        padding: 8px 16px; 
+        cursor: pointer; 
+        border-radius: 4px;
+        font-weight: bold;
+      }
+      .edit-btn-save:hover {
+        background-color: #45a049;
+      }
+      .edit-btn-save:disabled {
+        background-color: #ccc;
+        cursor: wait;
+      }
+
+      /* Cancel Button */
+      .edit-btn-cancel { 
+        background-color: #f44336; 
+        color: white; 
+        border: none; 
+        padding: 8px 16px; 
+        cursor: pointer; 
+        border-radius: 4px;
+      }
+      .edit-btn-cancel:hover {
+        background-color: #d32f2f;
+      }
+
+      /* Simple Animation */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Conteneur Principal */
+      .training-container {
+        padding: 20px;
+        background-color: #f9f9f9; /* Fond très léger */
+        border-radius: 8px;
+        margin-top: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      
+
+      .section-title {
+        font-size: 24px;
+        color: #333;
+        border-bottom: 2px solid #e0e0e0;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+      }
+
+      /* Section Obligatoire */
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .section-header h3 {
+        margin: 0;
+        color: #d32f2f; /* Rouge pour l'urgence/obligatoire */
+      }
+
+      .badge-mandatory {
+        background-color: #ffebee;
+        color: #c62828;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8em;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      /* Grille de cartes */
+      .training-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive */
+        gap: 20px;
+      }
+
+      /* Design des Cartes */
+      .training-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: 1px solid #eee;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .training-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+      }
+
+      .card-icon {
+        font-size: 2em;
+        margin-bottom: 10px;
+      }
+
+      .training-card h4 {
+        margin: 0 0 5px 0;
+        color: #2c3e50;
+        font-size: 1.2em;
+      }
+
+      .card-subtitle, .card-desc {
+        font-size: 0.9em;
+        color: #666;
+        margin-bottom: 15px;
+        flex-grow: 1; /* Pousse le contenu vers le bas */
+      }
+
+      /* Liste des modules GenAI */
+      .module-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .module-list li {
+        margin-bottom: 8px;
+        padding-left: 0;
+      }
+
+      .module-list a {
+        text-decoration: none;
+        color: #007bff;
+        font-size: 0.95em;
+        display: block;
+        padding: 5px 10px;
+        background-color: #f0f8ff;
+        border-radius: 4px;
+        transition: background 0.2s;
+      }
+
+      .module-list a:hover {
+        background-color: #e1efff;
+        text-decoration: underline;
+      }
+
+      /* Pied de carte (Boutons Workday) */
+      .card-footer {
+        margin-top: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #eee;
+        padding-top: 15px;
+      }
+
+      .platform-tag {
+        font-size: 0.75em;
+        font-weight: bold;
+        color: #888;
+        text-transform: uppercase;
+      }
+
+      .btn-access {
+        background-color: #0056b3; /* Bleu Workday ou Corporate */
+        color: white;
+        text-decoration: none;
+        padding: 8px 15px;
+        border-radius: 6px;
+        font-size: 0.9em;
+        transition: background 0.2s;
+      }
+
+      .btn-access:hover {
+        background-color: #004494;
+}
+
+    /* Cards statiques (Mandatory) */
+    .mandatory-section { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 40px; }
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .badge-mandatory { background: #fce8e6; color: #c5221f; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; text-transform: uppercase; }
+    .training-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+    .training-card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; background: #fff; transition: transform 0.2s; }
+    .training-card:hover { transform: translateY(-3px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .card-footer { margin-top: 15px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+    .btn-access { color: white; text-decoration: none; font-weight: 500; }
+
+    /* --- CATALOGUE DYNAMIQUE --- */
+    .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;}
+    
+    .search-box input {
+      padding: 10px 15px; border: 1px solid #dfe1e5; border-radius: 24px; width: 250px; outline: none; transition: all 0.3s;
+    }
+    .search-box input:focus { box-shadow: 0 1px 6px rgba(32,33,36,0.28); border-color: rgba(223,225,229,0); }
+
+    .training-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .training-row {
+      display: flex; align-items: center; background: white; padding: 15px; border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: background 0.2s;
+    }
+    .training-row:hover { background: #f8f9fa; }
+
+    /* Icones dynamiques */
+    .t-icon {
+      width: 50px; height: 50px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: bold; font-size: 12px; text-transform: uppercase; margin-right: 20px; flex-shrink: 0;
+    }
+    /* Couleurs basées sur l'éditeur */
+    .aws-bg { background: linear-gradient(135deg, #FF9900, #FFC107); }
+    .azure-bg { background: linear-gradient(135deg, #0078D4, #00BCF2); }
+    .google-bg { background: linear-gradient(135deg, #4285F4, #34A853); }
+    .data-bg { background: linear-gradient(135deg, #E22F3D, #FF5B62); } /* Databricks/Snowflake */
+    .salesforce-bg { background: linear-gradient(135deg, #00A1E0, #00C6FF); }
+    .default-bg { background: linear-gradient(135deg, #5f6368, #9aa0a6); }
+
+    .t-info { flex-grow: 1; }
+    .t-info h4 { margin: 0 0 5px 0; font-size: 16px; color: #202124; }
+    .t-info p { margin: 0; font-size: 13px; color: #5f6368; }
+
+    .t-meta { display: flex; align-items: center; gap: 10px; margin-right: 20px; }
+    .badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; background: #f1f3f4; color: #5f6368; }
+    
+    .btn-line {
+      padding: 8px 16px; border: 1px solid #dadce0; border-radius: 4px; text-decoration: none;
+      color: #1a73e8; font-size: 13px; font-weight: 500; white-space: nowrap; transition: 0.2s;
+    }
+    .btn-line:hover { background: #e8f0fe; border-color: #e8f0fe; }
+
+    /* Loader */
+    .loader { text-align: center; padding: 20px; color: #666; font-style: italic; }
+
+          /* --- STYLE SECTION ENGAGEMENT --- */
+      .construction-card {
+        background-color: #f8f9fa;     
+        border: 2px dashed #dfe1e5;    
+        border-radius: 12px;
+        padding: 60px 20px;
+        text-align: center;
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .construction-icon {
+        font-size: 50px;
+        margin-bottom: 20px;
+      }
+
+      .construction-card h3 {
+        color: #3c4043;
+        font-size: 22px;
+        margin: 0 0 10px 0;
+      }
+
+      .construction-card p {
+        color: #5f6368;
+        margin: 0 0 30px 0;
+        max-width: 600px;
+      }
+
+      /* Bouton style GitHub (Noir) */
+      .btn-github {
+        background-color: #24292e;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .btn-github:hover {
+        background-color: #1b1f23;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      }
+
+        /* Conteneur principal */
+    .admin-board-container {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 20px;
+      background-color: #F4F5F7; 
+    }
+    
+    /* Colonnes */
+    .admin-column {
+      background-color: #EBECF0;
+      border-radius: 6px;
+      width: 320px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.2s ease, border 0.2s ease;
+      border: 2px solid transparent; /* Pour éviter le saut lors du dragover */
+    }
+
+    /* Effet visuel lors du survol d'une colonne (Drag Over) */
+    .admin-column--drag-over {
+      background-color: #D2D4D8;
+      border-color: #0079BF;
+      border-style: dashed;
+    }
+
+    .admin-column-header {
+      font-weight: 700;
+      padding: 10px 5px;
+      color: #172B4D;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #ddd;
+      margin-bottom: 10px;
+    }
+    
+    .admin-count-badge {
+      background: #DFE1E6;
+      border-radius: 12px;
+      padding: 2px 8px;
+      font-size: 0.8em;
+      color: #42526E;
+      font-weight: 600;
+    }
+
+    .admin-task-list {
+      min-height: 100px; /* Important pour dropper dans une colonne vide */
+      padding-bottom: 10px;
+    }
+
+    /* Cartes */
+    .admin-card {
+      background-color: white;
+      border-radius: 4px;
+      box-shadow: 0 1px 2px rgba(9, 30, 66, 0.25);
+      padding: 10px;
+      margin-bottom: 8px;
+      cursor: grab;
+      border-left: 4px solid #0079BF;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+
+    .admin-card:hover {
+      background-color: #FAFBFC;
+    }
+
+    .admin-card:active {
+      cursor: grabbing;
+      transform: rotate(2deg);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    }
+
+    .admin-card-title {
+      font-weight: 600;
+      color: #172B4D;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .admin-card-subtitle {
+      font-size: 12px;
+      color: #5E6C84;
+      margin-bottom: 8px;
+    }
+
+    .admin-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Tags et Avatars */
+    .admin-tag {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: white;
+      text-transform: uppercase;
+    }
+
+    .admin-tag--s1 { background-color: #FF9F1A; } /* Orange */
+    .admin-tag--s2 { background-color: #EB5A46; } /* Rouge */
+    .admin-tag--none { display: none; }
+    
+    .admin-cm-avatar {
+      font-size: 11px;
+      color: #42526E;
+      background: #DFE1E6;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+
+        /* --- ADMIN FILTER BAR STYLES --- */
+    .admin-filter-bar {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        align-items: center;
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid var(--beige);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    }
+
+    .admin-filter-select {
+        padding: 10px 15px;
+        border: 1px solid #dfe1e5;
+        border-radius: 6px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 13px;
+        color: var(--dark-grey);
+        outline: none;
+        min-width: 200px;
+        cursor: pointer;
+        background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+                          linear-gradient(135deg, gray 50%, transparent 50%);
+        background-position: calc(100% - 20px) calc(1em + 2px),
+                            calc(100% - 15px) calc(1em + 2px);
+        background-size: 5px 5px,
+                        5px 5px;
+        background-repeat: no-repeat;
+        appearance: none; /* Removes default browser arrow */
+        -webkit-appearance: none;
+    }
+
+    .admin-filter-select:focus {
+        border-color: var(--red-poppy);
+        box-shadow: 0 0 0 3px rgba(248, 72, 94, 0.1);
+    }
+
+    .admin-filter-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--red-poppy);
+        text-transform: uppercase;
+        margin-right: -5px;
+    }
+
+    .btn-reset {
+        margin-left: auto; /* Pushes button to the right */
+        padding: 8px 16px;
+        background-color: transparent;
+        border: 1px solid var(--dark-grey);
+        color: var(--dark-grey);
+        border-radius: 50px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-reset:hover {
+        background-color: var(--dark-grey);
+        color: white;
+    }
+
+        /* --- CRA SPECIFIC STYLES --- */
+    .cra-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .cra-card {
+        background: var(--white);
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border-left: 5px solid var(--red-poppy); /* Red for Alert/Missing */
+        position: relative;
+        transition: transform 0.2s;
+    }
+
+    .cra-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    .cra-card h4 {
+        margin: 0 0 5px 0;
+        font-size: 16px;
+        color: var(--dark-grey);
+    }
+
+    .cra-card .cm-label {
+        font-size: 12px;
+        color: #888;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .cra-status-badge {
+        background-color: #ffebee;
+        color: #c62828;
+        padding: 5px 10px;
+        border-radius: 50px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        display: inline-block;
+    }
+    </style>
+</head>
+<body>
+
+    <div class="brand-circle"></div>
+    <div class="brand-circle-small"></div>
+
+    <div class="sidebar">
+        <div class="logo-area">
+            <span class="logo-mark">dt</span> devoteam
+        </div>
+        
+        <div class="nav-item active" onclick="navigate('dashboard', this)">
+            <span></span> Overview
+        </div>
+        <div class="nav-item" onclick="navigate('cra', this)">
+            <span></span> Saisie CRA
+        </div>
+        <div class="nav-item" onclick="navigate('pfu', this)">
+            <span></span> Suivi Administratif
+        </div>
+        <div class="nav-item" onclick="navigate('training', this)">
+            <span></span> Formations
+        </div>
+        <div class="nav-item" onclick="navigate('internal_projects', this)">
+            <span></span> Engagement
+        </div>
+    </div>
+
+
+
+    <div id="addModal" class="modal-overlay">
+        <div class="modal">
+            <h2 style="margin-top:0;">New Consultant</h2>
+            
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="new-name" placeholder="e.g. Thomas Anderson">
+            </div>
+
+            <div class="form-group">
+                <label>Project / client </label>
+                <input type="text" id="new-Project" placeholder="e.g. Geodis, IMPACT">
+            </div>
+
+            <div class="form-group">
+              <label>Description</label>
+              <textarea id="new-description" rows="3" placeholder="Brief project details..." 
+                  style="width:100%; padding:10px; border:1px solid var(--beige); border-radius:8px; font-family:'Montserrat'"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Initial Status</label>
+                <select id="new-status">
+                    <option value="Inter-contrat">Inter-contrat (Bench)</option>
+                    <option value="En Mission">En Mission</option>
+                    <option value="Projet Recherche">Projet Recherche</option>
+                    <option value="Engagement Devoteam">Engagement Devoteam</option>
+                </select>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="cta" onclick="submitConsultant()">Add to Board</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="main-content">
+        <div id="dashboard" class="page-section active">
+            <div class="header-row">
+              <h1>Vue d'ensemble des Consultants</h1>
+              <button class="fab" onclick="openModal()">+</button>
+          </div>
+          <h2>Suivis du staffing</h2>
+          <div class="admin-filter-bar" id="overview-filters">
+              <span class="admin-filter-label">Filtres:</span>
+              
+              <select id="filter-ov-consultant" class="admin-filter-select" onchange="applyOverviewFilters()">
+                  <option value="all">All Consultants</option>
+              </select>
+
+              <select id="filter-ov-project" class="admin-filter-select" onchange="applyOverviewFilters()">
+                  <option value="all">All Projects</option>
+              </select>
+
+              <button class="btn-reset" onclick="resetOverviewFilters()">Reset</button>
+            </div>
+
+
+            <div class="board">
+                <div class="column" id="mission" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <h3>En Mission <span style="color:var(--fresh-mint)">●</span></h3>
+                    <div class="task-list" id="list-mission">
+                        </div>
+                </div>
+
+                <div class="column" id="bench" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <h3>Inter-contrat <span style="color:var(--red-poppy)">●</span></h3>
+                    <div class="task-list" id="list-bench"></div>
+                </div>
+
+                <div class="column" id="research" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <h3>Projet Recherche <span style="color:var(--blue-lagoon)">●</span></h3>
+                    <div class="task-list" id="list-research"></div>
+                </div>
+
+                <div class="column" id="engagement" ondrop="drop(event)" ondragover="allowDrop(event)">
+              <h3>Engagement Devoteam <span style="color:var(--poppy-lighter)">●</span></h3>
+              <div class="task-list" id="list-engagement"></div>
+          </div>
+            </div>
+        </div>
+
+       <div id="cra" class="page-section">
+          <h1>Compte Rendu d'Activité</h1>
+          
+          <div class="header-row">
+            <h2>Missing CRA Alerts</h2>
+            </div>
+
+          <div class="admin-filter-bar" id="cra-filters">
+              <span class="admin-filter-label">Filtres:</span>
+              
+              <select id="filter-cra-consultant" class="admin-filter-select" onchange="applyCRAFilters()">
+                  <option value="all">All Consultants</option>
+              </select>
+
+              <select id="filter-cra-cm" class="admin-filter-select" onchange="applyCRAFilters()">
+                  <option value="all">All CMs</option>
+              </select>
+
+              <button class="btn-reset" onclick="resetCRAFilters()">Reset</button>
+          </div>
+
+          <div id="cra-loader" class="loader">Loading CRA status...</div>
+          <div id="cra-grid-view" class="cra-grid"></div>
+      </div>
+
+
+        <div id="pfu" class="page-section">
+          <div class="header-row">
+              <h1>Suivi Administratif </h1>
+          </div>
+          <h2>EYR, PFU, Career plan, Objectifs </h2>
+
+          <div id="admin-loader" style="display:none; text-align:center; padding: 20px; color: #172B4D;">
+             Chargement des données administratives...
+          </div>
+
+          <div id="admin-filters" class="admin-filter-bar" style="display:none;">
+            <span class="admin-filter-label">Filtres:</span>
+            
+            <select id="filter-consultant" class="admin-filter-select" onchange="applyAdminFilters()">
+                <option value="all">All Consultants</option>
+            </select>
+
+            <select id="filter-cm" class="admin-filter-select" onchange="applyAdminFilters()">
+                <option value="all">All CMs</option>
+            </select>
+
+            <button class="btn-reset" onclick="resetAdminFilters()">Reset Filters</button>
+          </div>
+
+          <div id="admin-board-view" class="admin-board-container" style="display:none;">
+            
+            <div class="admin-column" id="backlog" 
+                ondragover="allowAdminDrop(event)" 
+                ondrop="dropAdmin(event)" 
+                ondragleave="leaveAdminDrop(event)">
+              <div class="admin-column-header">
+                Backlog / TBD 
+                <span id="cnt-backlog" class="admin-count-badge">0</span>
+              </div>
+              <div class="admin-task-list"></div>
+            </div>
+
+            <div class="admin-column" id="scheduled" 
+                ondragover="allowAdminDrop(event)" 
+                ondrop="dropAdmin(event)" 
+                ondragleave="leaveAdminDrop(event)">
+              <div class="admin-column-header">
+                Scheduled 
+                <span id="cnt-scheduled" class="admin-count-badge">0</span>
+              </div>
+              <div class="admin-task-list"></div>
+            </div>
+
+            <div class="admin-column" id="done" 
+                ondragover="allowAdminDrop(event)" 
+                ondrop="dropAdmin(event)" 
+                ondragleave="leaveAdminDrop(event)">
+              <div class="admin-column-header">
+                Done / Received 
+                <span id="cnt-done" class="admin-count-badge">0</span>
+              </div>
+              <div class="admin-task-list"></div>
+            </div>
+
+          </div>
+        </div>
+
+
+        <div id="training" class="page-section">
+            <h1>Formations & Certifications</h1>
+            <h2>Liste et accès</h2>
+            <div class="training-container">
+              <h2 class="section-title">Formations</h2>
+  
+            <div class="training-section mandatory-section">
+              <div class="section-header">
+                <h3> Obligatoire</h3>
+                <span class="badge-mandatory">Prioritaire</span>
+              </div>
+
+              <div class="training-grid">
+                
+                <div class="training-card">
+                  <div class="card-icon"></div>
+                  <h4>GenAI Level 1</h4>
+                  <p class="card-subtitle">Parcours complet de 5 modules</p>
+                  <ul class="module-list">
+                    <li><a href="https://devoteamlearning.udemy.com/learning-paths/7254136/" target="_blank">Module 1 : GenAI Ethics</a></li>
+                    <li><a href="https://devoteamlearning.udemy.com/learning-paths/7254530/" target="_blank">Module 2 : Prompt Engineering</a></li>
+                    <li><a href="https://devoteamlearning.udemy.com/learning-paths/7648132/" target="_blank">Module 3 : GenAI conversation with clients</a></li>
+                    <li><a href="https://devoteamlearning.udemy.com/learning-paths/7625566/" target="_blank">Module 4 : GenAI charter</a></li>
+                    <li><a href="https://devoteamlearning.udemy.com/learning-paths/7885798/ target"target="_blank">Module 5 : Gemini & Devoteam</a></li>
+                  </ul>
+                </div>
+
+                <div class="training-card">
+                  <div class="card-icon"></div>
+                  <h4>Sustainable IT</h4>
+                  <p class="card-desc">Comprendre l'impact numérique et les bonnes pratiques.</p>
+                  <div class="card-footer">
+                    <span class="platform-tag">Workday Learning</span>
+                    <a href="https://wd3.myworkday.com/devoteam/learning/course/bd5e052b13d910014ca3148c211a0001?type=9882927d138b100019b928e75843018d" target="_blank" class="btn-access">Accéder au cours</a>
+                  </div>
+                </div>
+
+                <div class="training-card">
+                  <div class="card-icon"></div>
+                  <h4>Data Protection</h4>
+                  <p class="card-desc">Règlementation RGPD et sécurité des données.</p>
+                  <div class="card-footer">
+                    <span class="platform-tag">Workday Learning</span>
+                    <a href="https://devoteamlearning.udemy.com/learning-paths/7885798/" target="_blank" class="btn-access">Accéder au cours</a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+           <div class="training-container other-trainings">
+    <div class="header-row">
+      <h2 class="section-title">Catalogue de Formations</h2>
+      <div class="search-box">
+        <input type="text" id="trainingSearch" onkeyup="filterTrainings()" placeholder="Rechercher (ex: AWS, Agile, GenAI...)">
+        <span class="search-icon"></span>
+      </div>
+      <div class="training-list" id="trainingList">
+        <div class="loader" id="loader">Chargement du catalogue depuis Google Sheets...</div>
+      </div>
+    </div>
+    </div>
+  </div>
+        </div>
+
+
+     <div id="internal_projects" class="page-section" style = "margin-right: 50%">
+      <h1 >Engagement</h1>
+
+      <div class="training-container">
+        <h2 class="section-title">Projets & Contributions</h2>
+
+        <div class="construction-card">
+          <div class="construction-icon">🏗️</div>
+            <h3>Site projets internes en cours de construction</h3>
+            <p>
+              Nous bâtissons actuellement une plateforme dédiée pour présenter les  initiatives et internes. 
+              Le contenu sera bientôt disponible ici.
+            </p>
+            <a href="https://github.com/Pierre-mulliez1/internal_projects" target="_blank" class="btn-github">
+            <span>Voir le site temporaire sur GitHub ou via github page</span>
+            </a>
+        </div>
+  </div>
+</div>
+
+    <div id="edit-modal" class="edit-modal-overlay">
+      <div class="edit-modal-content">
+        <h3>Edit Mission</h3>
+        
+        <input id="modal-dom-id"> 
+        <div class="edit-form-group">
+          <label>Consultant:</label>
+          <input type="text" id="display-name" disabled class="edit-disabled-input">
+        </div>
+
+
+        <div class="edit-form-group">
+          <label>Current Project:</label>
+          <input type="text" id="modal-project" placeholder="Enter project name...">
+        </div>
+
+        <div class="edit-form-group">
+            <label>Description:</label>
+            <textarea id="modal-description" rows="3" class="edit-input" 
+                      style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px; font-family:Arial"></textarea>
+        </div>
+
+        <div class="edit-modal-buttons">
+          <button onclick="closeEditModal()" class="edit-btn-cancel">Cancel</button>
+          <button onclick="saveProjectChange()" class="edit-btn-save">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <script>
+    function startAllLoading() {
+    initAdminBoard(); // Charge le tableau Kanban Admin
+    initCRAView();    // Charge les alertes CRA
+    initTrainingData() 
+  }
+
+    // Logique de détection de l'état du document (DOM)
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      // Si le document est déjà prêt, on lance immédiatement avec un petit délai
+      setTimeout(startAllLoading, 1); 
+    } else {
+      // Sinon, on attend l'événement DOMContentLoaded
+      document.addEventListener('DOMContentLoaded', startAllLoading);
+    }
+
+    function initTrainingData() {
+      console.log("Démarrage du chargement des formations...");
+      
+      const loader = document.getElementById('loader');
+      if(loader) loader.style.display = 'block';
+
+      google.script.run
+        .withSuccessHandler(renderTrainings)
+        .withFailureHandler(showError)
+        .getDataFromSheet();
+    }
+
+    
+
+    // 2. Gestion des Erreurs 
+    function showError(error) {
+      console.error("Erreur Backend:", error);
+      const loader = document.getElementById('loader');
+      loader.innerHTML = "Erreur : " + error.message;
+      loader.style.color = "red";
+      loader.style.fontWeight = "bold";
+    }
+
+    function renderTrainings(data) {
+      const container = document.getElementById('trainingList');
+      const loader = document.getElementById('loader');
+      
+      if(loader) loader.style.display = 'none';
+
+      data.forEach(function(row) {
+        // row structure: [0: Éditeur, 1: Titre, 2: Desc, 3: URL]
+        const editor = row[0] || "Autre";
+        const title = row[1] || "Titre non défini";
+        const desc = row[2] || "Pas de description";
+        const url = row[3] || "#";
+
+        // Déterminer la classe CSS pour l'icône selon l'éditeur
+        const iconClass = getProviderClass(editor);
+
+        // Création de l'élément HTML
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'training-row';
+        itemDiv.setAttribute('data-tags', (editor + " " + title + " " + desc).toLowerCase());
+
+        itemDiv.innerHTML = `
+          <div class="t-icon ${iconClass}">${editor.substring(0, 4)}</div>
+          <div class="t-info">
+            <h4>${title}</h4>
+            <p>${desc}</p>
+          </div>
+          <div class="t-meta">
+            <span class="badge">${editor}</span>
+          </div>
+          <a href="${url}" target="_blank" class="btn-line">Accéder</a>
+        `;
+
+        container.appendChild(itemDiv);
+      });
+    }
+
+    // 3. Helper : Styles des icônes
+    function getProviderClass(editorName) {
+      const name = editorName.toLowerCase();
+      if (name.includes('aws')) return 'aws-bg';
+      if (name.includes('azure') || name.includes('microsoft')) return 'azure-bg';
+      if (name.includes('google') || name.includes('gcp')) return 'google-bg';
+      if (name.includes('databricks') || name.includes('snowflake') || name.includes('data')) return 'data-bg';
+      if (name.includes('salesforce')) return 'salesforce-bg';
+      return 'default-bg';
+    }
+
+    // 4. Fonction de recherche
+    function filterTrainings() {
+      const input = document.getElementById('trainingSearch');
+      const filter = input.value.toLowerCase();
+      const list = document.getElementById('trainingList');
+      const items = list.getElementsByClassName('training-row');
+
+      for (let i = 0; i < items.length; i++) {
+        const tags = items[i].getAttribute('data-tags');
+        if (tags.includes(filter)) {
+          items[i].style.display = "flex"; // On garde le flex display
+        } else {
+          items[i].style.display = "none";
+        }
+      }
+    }
+        // --- NAVIGATION LOGIC ---
+        function navigate(pageId, navElement) {
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            navElement.classList.add('active');
+
+            if (pageId === 'dashboard') {
+                loadKanbanData();
+              }    
+        }
+
+      /* --- MODAL FUNCTIONS --- */
+        function openModal() {
+            document.getElementById('addModal').style.display = 'flex';
+            document.getElementById('new-name').focus();
+        }
+
+        function closeModal() {
+            document.getElementById('addModal').style.display = 'none';
+            // Clear inputs
+            document.getElementById('new-name').value = '';
+        }
+
+
+
+  // 3. Save Changes
+  function saveProjectChange() {
+    // Retrieve values from the form
+    var name = document.getElementById('modal-name').value;
+    var client = document.getElementById('modal-client').value;
+    var domId = document.getElementById('modal-dom-id').value;
+    var newProject = document.getElementById('modal-project').value;
+
+    // Visual Feedback (Optional: Change button text to "Saving...")
+    var saveBtn = document.querySelector('.btn-save');
+    var originalText = saveBtn.innerText;
+    saveBtn.innerText = "Saving...";
+
+    google.script.run
+      .withSuccessHandler(function(response) {
+        saveBtn.innerText = originalText;
+        
+        if (response.status === 'success') {
+          closeModal();
+          
+          // --- UPDATE THE DOM IMMEDIATELY ---
+          var card = document.getElementById(domId);
+          if (card) {
+            // 1. Update the visible text
+            var projectSpan = card.querySelector('.project-text');
+            if (projectSpan) projectSpan.innerText = newProject;
+            
+            // 2. Update the data attribute (so next time we open modal, it's correct)
+            card.dataset.project = newProject;
+          }
+        } else {
+          alert("Error: " + response.message);
+        }
+      })
+      .withFailureHandler(function(err) {
+        saveBtn.innerText = originalText;
+        alert("Server Error");
+      })
+      .updateProjectOnServer(name, client, newProject);
+  }
+          /* ---  CONSULTANT LOGIC --- */
+          function submitConsultant() {
+                const name = document.getElementById('new-name').value;
+                const status = document.getElementById('new-status').value;
+                const project = document.getElementById('new-Project').value;
+                const description = document.getElementById('new-description').value; // Get Desc
+
+                if (!name || !status) {
+                    alert("Please enter at least a name and status");
+                    return;
+                }
+
+                closeModal(); 
+
+                // Pass description to backend
+                google.script.run
+                    .withSuccessHandler(onConsultantAdded)
+                    .addConsultantToSheet(name, status, project, description);
+            }
+
+          function onConsultantAdded() {
+              // Refresh the board to show the new card
+              loadKanbanData(); 
+          }
+
+          // Close modal if clicking outside of it
+          window.onclick = function(event) {
+              const modal = document.getElementById('addModal');
+              if (event.target == modal) {
+                  closeModal();
+              }
+        }
+
+        // --- KANBAN LOGIC ---
+        window.onload = function() {
+            loadKanbanData();
+        };
+
+        function loadKanbanData() {
+           google.script.run.withSuccessHandler(renderBoard).getConsultantData();
+        }
+
+        let GLOBAL_STAFFING_DATA = [];
+
+        // --- REPLACED RENDER FUNCTION ---
+        function renderBoard(data) {
+            // 1. Store data globally so we can filter later without server calls
+            GLOBAL_STAFFING_DATA = data;
+
+            // 2. Populate the Dropdowns (Consultants and Projects)
+            populateOverviewFilters(data);
+
+            // 3. Render the board with default filters (All)
+            applyOverviewFilters();
+        }
+
+        // --- POPULATE DROPDOWNS ---
+        function populateOverviewFilters(data) {
+            // Extract unique Names and Clients, filter out empty values, and sort
+            const consultants = [...new Set(data.map(item => item.name).filter(Boolean))].sort();
+            const projects = [...new Set(data.map(item => item.client).filter(Boolean))].sort();
+
+            // 1. Fill Consultant Select
+            const consSelect = document.getElementById('filter-ov-consultant');
+            consSelect.innerHTML = '<option value="all">All Consultants</option>';
+            consultants.forEach(name => {
+                let opt = document.createElement('option');
+                opt.value = name;
+                opt.innerText = name;
+                consSelect.appendChild(opt);
+            });
+
+            // 2. Fill Project Select
+            const projSelect = document.getElementById('filter-ov-project');
+            projSelect.innerHTML = '<option value="all">All Projects</option>';
+            projects.forEach(client => {
+                let opt = document.createElement('option');
+                opt.value = client;
+                opt.innerText = client;
+                projSelect.appendChild(opt);
+            });
+        }
+
+        // --- APPLY FILTERS & RENDER ---
+        function applyOverviewFilters() {
+            if (!GLOBAL_STAFFING_DATA) return;
+
+            // Get current selections
+            const selectedCons = document.getElementById('filter-ov-consultant').value;
+            const selectedProj = document.getElementById('filter-ov-project').value;
+
+            // Clear all columns
+            const columns = ['list-mission', 'list-bench', 'list-research', 'list-engagement'];
+            columns.forEach(id => document.getElementById(id).innerHTML = '');
+
+            // Iterate through data and display only matching items
+            GLOBAL_STAFFING_DATA.forEach((consultant, index) => {
+                
+                // Filter Logic
+                const matchName = (selectedCons === 'all') || (consultant.name === selectedCons);
+                const matchProj = (selectedProj === 'all') || (consultant.client === selectedProj);
+
+                if (matchName && matchProj) {
+                    // Re-use your existing createCard function
+                    const card = createCard(consultant, index);
+                    
+                    // Append to correct column
+                    if (consultant.status === 'En Mission') {
+                        document.getElementById('list-mission').appendChild(card);
+                    } else if (consultant.status === 'Inter-contrat') {
+                        document.getElementById('list-bench').appendChild(card);
+                    } else if (consultant.status === 'Projet Recherche') {
+                        document.getElementById('list-research').appendChild(card);
+                    } else if (consultant.status === 'Engagement Devoteam') { 
+                        document.getElementById('list-engagement').appendChild(card);
+                    }
+                }
+            });
+        }
+
+        // --- RESET BUTTON ---
+        function resetOverviewFilters() {
+            document.getElementById('filter-ov-consultant').value = 'all';
+            document.getElementById('filter-ov-project').value = 'all';
+            applyOverviewFilters();
+        }
+
+        function createCard(consultant, index) {
+          const div = document.createElement('div');
+          div.className = 'task';
+          div.draggable = true;
+          div.id = 'task-' + index;
+          
+          // Store data in attributes for easy retrieval
+          div.setAttribute('data-id', consultant.id);
+          div.setAttribute('data-name', consultant.name);
+          div.setAttribute('data-status', consultant.status);
+          div.setAttribute('data-desc', consultant.description || ""); // Store Desc
+          
+          div.ondragstart = drag;
+          div.ondblclick = function() { openEditModal(this); };
+
+          // Display Logic
+          div.innerHTML = ` 
+              <strong>${consultant.name}</strong>
+              <span class="project-text" style="color:var(--blue-lagoon); font-weight:600; display:block; margin-bottom:4px;">
+                  ${consultant.client || 'No Project'}
+              </span>
+              <div class="desc-text" style="font-size:11px; color:#666; line-height:1.4; border-top:1px solid #eee; padding-top:4px;">
+                  ${consultant.description || ''}
+              </div>
+          `;
+          return div;
+      }
+
+        // --- DRAG AND DROP EVENTS ---
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var draggedElement = document.getElementById(data);
+            var targetColumn = ev.target.closest('.column');
+            
+            if (targetColumn && draggedElement) {
+                targetColumn.querySelector('.task-list').appendChild(draggedElement);
+                
+                let newStatus = "";
+                if(targetColumn.id === 'mission') newStatus = "En Mission";
+                if(targetColumn.id === 'bench') newStatus = "Inter-contrat";
+                if(targetColumn.id === 'research') newStatus = "Projet Recherche";
+                if(targetColumn.id === 'engagement') newStatus = "Engagement Devoteam";
+
+                draggedElement.setAttribute('data-status', newStatus);
+                // Find the project text span within the dragged card
+                var projectSpan = draggedElement.querySelector(".project-text");
+                
+                if (projectSpan) {
+                  // Update the text to match the 'No Project' state
+                  projectSpan.textContent = "No Project";
+
+                const id = draggedElement.getAttribute('data-id');
+                google.script.run.updateConsultantStatus(id, newStatus);
+            }
+        }
+        }
+
+    // 1. EDIT consultant THE MODAL
+    function openEditModal(cardElement) {
+        const modal = document.getElementById('edit-modal');
+        const nameInput = document.getElementById('display-name');
+        const projectInput = document.getElementById('modal-project');
+        const descInput = document.getElementById('modal-description'); // New Input
+        const hiddenIdInput = document.getElementById('modal-dom-id');
+        
+        // Get Data from Card Attributes/Text
+        const name = cardElement.querySelector('strong').innerText; 
+        const currentProjectText = cardElement.querySelector('.project-text').innerText;
+        const currentDesc = cardElement.getAttribute('data-desc'); // Get from Attribute
+        const id = cardElement.getAttribute('data-id');
+
+        // Populate Modal
+        nameInput.value = name;
+        hiddenIdInput.value = id;
+        descInput.value = currentDesc || ""; // Populate Description
+
+        if (currentProjectText === 'No Project' || currentProjectText === 'null') {
+            projectInput.value = '';
+        } else {
+            projectInput.value = currentProjectText;
+        }
+
+        modal.style.display = 'flex';
+    }
+
+  // 2. CLOSE THE MODAL
+  function closeEditModal() {
+    document.getElementById('edit-modal').style.display = 'none';
+  }
+
+// 3. SAVE CHANGES
+function saveProjectChange() {
+    const id = document.getElementById('modal-dom-id').value;
+    const newProject = document.getElementById('modal-project').value;
+    const newDesc = document.getElementById('modal-description').value; // New Value
+    const btn = document.querySelector('.edit-btn-save');
+
+    btn.disabled = true;
+    btn.textContent = "Saving...";
+
+    google.script.run
+      .withSuccessHandler(function() {
+        // Find the card by data-id instead of index ID to be safer
+        const card = document.querySelector(`.task[data-id="${id}"]`);
+        
+        if (card) {
+          // Update UI Text
+          const projectSpan = card.querySelector('.project-text');
+          const descDiv = card.querySelector('.desc-text');
+          
+          if(projectSpan) projectSpan.innerText = newProject || "No Project";
+          if(descDiv) descDiv.innerText = newDesc;
+          
+          // Update Attribute (so next edit is correct)
+          card.setAttribute('data-desc', newDesc);
+        }
+
+        btn.disabled = false;
+        btn.textContent = "Save Changes";
+        closeEditModal();
+      })
+      .updateConsultantDetails(id, newProject, newDesc); // Call new backend function
+}
+
+function initAdminBoard() {
+    console.log("Démarrage du chargement du Board Administratif...");
+    
+    // Gestion du Loader
+    const loader = document.getElementById('admin-loader');
+    const board = document.getElementById('admin-board-view');
+    
+    if(loader) loader.style.display = 'block';
+    if(board) board.style.display = 'none';
+
+    // Appel Serveur
+    google.script.run
+      .withSuccessHandler(renderAdminBoard)
+      .withFailureHandler(showAdminError)
+      .getAgileBoardData();
+  }
+
+
+  // --- 2. RENDU (RENDER) ---
+
+  function renderAdminBoard(data) {
+    // Masquer le loader et afficher le board
+    const loader = document.getElementById('admin-loader');
+    const board = document.getElementById('admin-board-view');
+    if(loader) loader.style.display = 'none';
+    if(board) board.style.display = 'flex';
+
+    // Remplissage des colonnes
+    fillAdminColumn('backlog', data.backlog);
+    fillAdminColumn('scheduled', data.scheduled);
+    fillAdminColumn('done', data.done);
+  }
+
+  function showAdminError(error) {
+    const loader = document.getElementById('admin-loader');
+    if(loader) loader.innerText = "Erreur de chargement : " + error.message;
+  }
+
+  function fillAdminColumn(colId, cards) {
+    const container = document.querySelector(`#${colId} .admin-task-list`);
+    // Mise à jour du compteur
+    const counterBadge = document.getElementById(`cnt-${colId}`);
+    if(counterBadge) counterBadge.innerText = cards.length;
+    
+    container.innerHTML = ""; // Reset
+
+    cards.forEach(c => {
+      // Classes CSS .admin-tag--*
+      let tagClass = c.tag === 'S1' ? 'admin-tag--s1' : (c.tag === 'S2' ? 'admin-tag--s2' : 'admin-tag--none');
+      
+      let html = `
+        <div class="admin-card" 
+             id="${c.id}" 
+             draggable="true" 
+             ondragstart="dragAdmin(event)"
+             data-consultant="${c.consultant}" 
+             data-tasktype="${c.taskType}">
+             
+          <div class="admin-card-title">${c.taskType}</div>
+          <div class="admin-card-subtitle">${c.consultant}</div>
+          
+          <div class="admin-card-footer">
+            <span class="admin-tag ${tagClass}">${c.tag || ''}</span>
+            <span class="admin-cm-avatar">👤 ${c.cm || '?'}</span>
+          </div>
+        </div>
+      `;
+      container.innerHTML += html;
+    });
+  }
+
+  // --- 3. DRAG AND DROP (Fonctions renommées "Admin") ---
+
+  function allowAdminDrop(ev) {
+    ev.preventDefault();
+    ev.currentTarget.classList.add('admin-column--drag-over');
+  }
+
+  function leaveAdminDrop(ev) {
+    ev.currentTarget.classList.remove('admin-column--drag-over');
+  }
+
+  function dragAdmin(ev) {
+    ev.dataTransfer.setData("text/plain", ev.target.id);
+    ev.dataTransfer.setData("consultant", ev.target.dataset.consultant);
+    ev.dataTransfer.setData("taskType", ev.target.dataset.tasktype);
+  }
+
+  function dropAdmin(ev) {
+    ev.preventDefault();
+    
+    const columnDiv = ev.currentTarget; 
+    columnDiv.classList.remove('admin-column--drag-over'); 
+
+    const cardId = ev.dataTransfer.getData("text/plain");
+    const consultant = ev.dataTransfer.getData("consultant");
+    const taskType = ev.dataTransfer.getData("taskType");
+    
+    const card = document.getElementById(cardId);
+    const targetList = columnDiv.querySelector('.admin-task-list');
+
+    if (card && targetList) {
+      targetList.appendChild(card);
+      updateAdminCounts(); 
+
+      // Déterminer le statut
+      let newStatusText = "TBD";
+      if (columnDiv.id === "scheduled") newStatusText = "Scheduled";
+      if (columnDiv.id === "done") newStatusText = "Done";
+
+      // Appel Serveur silencieux (optimiste)
+      google.script.run
+        .withSuccessHandler(res => console.log("Admin Update OK"))
+        .withFailureHandler(err => console.error("Admin Update Error", err))
+        .updateTaskStatus(consultant, taskType, newStatusText);
+    }
+  }
+
+  function updateAdminCounts() {
+    ['backlog', 'scheduled', 'done'].forEach(id => {
+      const list = document.querySelector(`#${id} .admin-task-list`);
+      if(list) {
+        document.getElementById(`cnt-${id}`).innerText = list.children.length;
+      }
+    });
+  }
+
+  let GLOBAL_ADMIN_DATA = null;
+
+  // --- REPLACED RENDER FUNCTION ---
+  function renderAdminBoard(data) {
+    // 1. Store data globally
+    GLOBAL_ADMIN_DATA = data;
+
+    // 2. Hide Loader
+    const loader = document.getElementById('admin-loader');
+    if(loader) loader.style.display = 'none';
+
+    // 3. Show Board & Filters
+    document.getElementById('admin-board-view').style.display = 'flex';
+    document.getElementById('admin-filters').style.display = 'flex';
+
+    // 4. Populate Dropdowns (Only once)
+    populateAdminFilters(data);
+
+    // 5. Render Initial View (All data)
+    applyAdminFilters();
+  }
+
+  // --- NEW FILTER LOGIC ---
+
+  function populateAdminFilters(data) {
+    // Combine all cards to extract unique names
+    const allCards = [...data.backlog, ...data.scheduled, ...data.done];
+    
+    // Extract unique Consultants and CMs
+    const consultants = [...new Set(allCards.map(c => c.consultant).filter(Boolean))].sort();
+    const cms = [...new Set(allCards.map(c => c.cm).filter(Boolean))].sort();
+
+    // Fill Consultant Select
+    const consSelect = document.getElementById('filter-consultant');
+    // Keep first option "All"
+    consSelect.innerHTML = '<option value="all">All Consultants</option>';
+    consultants.forEach(name => {
+      let opt = document.createElement('option');
+      opt.value = name;
+      opt.innerText = name;
+      consSelect.appendChild(opt);
+    });
+
+    // Fill CM Select
+    const cmSelect = document.getElementById('filter-cm');
+    cmSelect.innerHTML = '<option value="all">All CMs</option>';
+    cms.forEach(name => {
+      let opt = document.createElement('option');
+      opt.value = name;
+      opt.innerText = name;
+      cmSelect.appendChild(opt);
+    });
+  }
+
+  function applyAdminFilters() {
+    if (!GLOBAL_ADMIN_DATA) return;
+
+    const selectedCons = document.getElementById('filter-consultant').value;
+    const selectedCM = document.getElementById('filter-cm').value;
+
+    // Create a filtered copy of the data
+    const filteredData = {
+      backlog: filterList(GLOBAL_ADMIN_DATA.backlog, selectedCons, selectedCM),
+      scheduled: filterList(GLOBAL_ADMIN_DATA.scheduled, selectedCons, selectedCM),
+      done: filterList(GLOBAL_ADMIN_DATA.done, selectedCons, selectedCM)
+    };
+
+    // Update the UI
+    fillAdminColumn('backlog', filteredData.backlog);
+    fillAdminColumn('scheduled', filteredData.scheduled);
+    fillAdminColumn('done', filteredData.done);
+  }
+
+  // Helper function to filter a specific list
+  function filterList(list, consFilter, cmFilter) {
+    return list.filter(card => {
+      const matchCons = (consFilter === 'all') || (card.consultant === consFilter);
+      const matchCM = (cmFilter === 'all') || (card.cm === cmFilter);
+      return matchCons && matchCM;
+    });
+  }
+
+  function resetAdminFilters() {
+    document.getElementById('filter-consultant').value = 'all';
+    document.getElementById('filter-cm').value = 'all';
+    applyAdminFilters();
+  }
+
+    // --- GLOBAL DATA STORE FOR CRA ---
+  let GLOBAL_CRA_DATA = [];
+
+  // 1. INITIALIZE (Call this when opening the CRA tab or on load)
+  function initCRAView() {
+    console.log("Démarrage du chargement CRA...");
+    const loader = document.getElementById('cra-loader');
+    if(loader) loader.style.display = 'block';
+    
+    // Appel au script Google (Côté Serveur)
+    google.script.run
+        .withSuccessHandler(renderCRA)
+        .getCRAData();
+  }
+
+  function renderCRA(data) {
+      // Stockage Global
+      GLOBAL_CRA_DATA = data;
+      
+      // Masquer le loader
+      const loader = document.getElementById('cra-loader');
+      if(loader) loader.style.display = 'none';
+
+      // Remplir les filtres et afficher la grille
+      populateCRAFilters(data);
+      applyCRAFilters();
+  }
+
+  // 3. POPULATE FILTERS
+  function populateCRAFilters(data) {
+      const consultants = [...new Set(data.map(d => d.name).filter(Boolean))].sort();
+      const cms = [...new Set(data.map(d => d.cm).filter(Boolean))].sort();
+
+      // Fill Consultant Select
+      const consSelect = document.getElementById('filter-cra-consultant');
+      consSelect.innerHTML = '<option value="all">All Consultants</option>';
+      consultants.forEach(name => {
+          let opt = document.createElement('option');
+          opt.value = name; 
+          opt.innerText = name;
+          consSelect.appendChild(opt);
+      });
+
+      // Fill CM Select
+      const cmSelect = document.getElementById('filter-cra-cm');
+      cmSelect.innerHTML = '<option value="all">All CMs</option>';
+      cms.forEach(cm => {
+          let opt = document.createElement('option');
+          opt.value = cm;
+          opt.innerText = cm;
+          cmSelect.appendChild(opt);
+      });
+  }
+
+  // 4. APPLY FILTERS & DRAW GRID
+  function applyCRAFilters() {
+      if (!GLOBAL_CRA_DATA) return;
+
+      const selCons = document.getElementById('filter-cra-consultant').value;
+      const selCM = document.getElementById('filter-cra-cm').value;
+      const container = document.getElementById('cra-grid-view');
+
+      container.innerHTML = ''; // Clear current
+
+      GLOBAL_CRA_DATA.forEach(item => {
+          // Filter Logic
+          const matchCons = (selCons === 'all') || (item.name === selCons);
+          const matchCM = (selCM === 'all') || (item.cm === selCM);
+
+          if (matchCons && matchCM) {
+              // Create Alert Card
+              const card = document.createElement('div');
+              card.className = 'cra-card';
+              card.innerHTML = `
+                  <h4>${item.name}</h4>
+                  <span class="cm-label">CM: <strong>${item.cm}</strong></span>
+                  <div class="cra-status-badge">⚠️ ${item.status || "Missing"}</div>
+              `;
+              container.appendChild(card);
+          }
+      });
+
+      // Empty State Message
+      if (container.children.length === 0) {
+          container.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#888;">
+              ✅ All CRAs validated (or no data matching filters).
+          </p>`;
+      }
+  }
+
+  function resetCRAFilters() {
+      document.getElementById('filter-cra-consultant').value = 'all';
+      document.getElementById('filter-cra-cm').value = 'all';
+      applyCRAFilters();
+  }
+    </script>
+</body>
+</html>
