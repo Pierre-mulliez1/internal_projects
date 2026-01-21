@@ -108,3 +108,88 @@ function getEngagementFromSheet(ss) {
     };
   });
 }
+
+/**
+ * Existing code above... (doGet, getPortalData, etc.)
+ */
+
+// --- NEW WRITE FUNCTIONS ---
+
+/**
+ * Adds a new Job to the 'Jobs' sheet.
+ * Checks for duplicates based on Title + Project Name.
+ */
+function addJobToSheet(formObject) {
+  var ss = SpreadsheetApp.openById('1THHs9luEROjHW0fgVSAwwD7gOJly6nZY49YwQ2ZZs8w'); // Your ID
+  var sheet = ss.getSheetByName("Request_Jobs");
+  
+  // 1. Validation: Check if exists
+  var data = sheet.getDataRange().getValues();
+  // Skip header
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][0].toString().toLowerCase() === formObject.title.toLowerCase() && 
+        data[i][2].toString().toLowerCase() === formObject.project.toLowerCase()) {
+      throw new Error("A role with this Title in this Project already exists.");
+    }
+  }
+
+  // 2. Append Data
+  // CSV Order: [0]title, [1]Specification, [2]Project, [3]imageUrl, [4]description, [5]applyEmail
+  sheet.appendRow([
+    formObject.title,
+    formObject.spec,
+    formObject.project,
+    formObject.img,
+    formObject.desc,
+    formObject.email
+  ]);
+
+  return "Success! Role added.";
+}
+
+/**
+ * Adds a new Project to the 'Projects request' sheet.
+ * Checks for duplicates based on Project Title.
+ */
+function addProjectToSheet(formObject) {
+  var ss = SpreadsheetApp.openById('1THHs9luEROjHW0fgVSAwwD7gOJly6nZY49YwQ2ZZs8w'); // Your ID
+  var sheet = ss.getSheetByName("Request_Projects");
+
+  // 1. Validation
+  var data = sheet.getDataRange().getValues();
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][1].toString().toLowerCase() === formObject.title.toLowerCase()) {
+      throw new Error("A project with this title already exists.");
+    }
+  }
+
+  // 2. Generate Simple ID (count + 1)
+  var newId = data.length; 
+
+  // 3. Prepare Row Data based on your specific column structure
+  // [0]id, [1]title, [2]category, [3]entity, [4]entity2, [5]subtitle, [6]Demo, [7]Doc, [8]Img1, [9]Img2(unused), [10]FeatHead, [11]FeatSub, [12]F1T, [13]F1D...
+  
+  var rowData = [
+    newId,
+    formObject.title,
+    formObject.category,
+    formObject.entity,
+    formObject.entity2,
+    formObject.subtitle,
+    formObject.demoLink || "#",
+    formObject.docLink || "#",
+    formObject.img1,
+    "", // Placeholder for Img2 if unused
+    "Key Features", // Default Feature Heading
+    "What makes this project unique", // Default Feature Subheading
+    formObject.f1Title, formObject.f1Desc, // Feature 1
+    formObject.f2Title, formObject.f2Desc,  // Feature 2
+    formObject.f3Title || "", formObject.f3Desc || "",
+    formObject.f4Title || "", formObject.f4Desc || "",
+    formObject.f5Title || "", formObject.f5Desc || "",
+    formObject.f6Title || "", formObject.f6Desc || ""
+  ];
+
+  sheet.appendRow(rowData);
+  return "Success! Project added.";
+}

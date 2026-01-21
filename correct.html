@@ -317,6 +317,35 @@
       letter-spacing: 1px; 
     }
 
+    /* --- ADMIN / UPDATE SECTION UI --- */
+    .admin-selection-container {
+      display: flex; gap: 2rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;
+    }
+    .admin-card {
+      background: white; width: 300px; padding: 3rem 2rem;
+      border: 2px solid #eee; border-radius: 12px;
+      text-align: center; cursor: pointer; transition: all 0.3s ease;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .admin-card:hover {
+      border-color: var(--primary-rose);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(217, 83, 117, 0.15);
+    }
+    .admin-icon {
+      font-size: 3rem; color: var(--secondary-green); margin-bottom: 1rem;
+    }
+    .back-link {
+      display: inline-block; margin-bottom: 1.5rem; color: var(--text-light); 
+      cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .back-link:hover { color: var(--primary-rose); }
+    
+    .form-instruction {
+      background-color: #eef2ff; border-left: 4px solid var(--secondary-green);
+      padding: 1rem; margin-bottom: 2rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.5;
+    }
+
     /* --- PERSONA GRID --- */
     .persona-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 4rem; }
     .persona-card {
@@ -387,7 +416,8 @@
           <li><button onclick="switchTab('roles')" class="active" id="nav-roles">Open Roles</button></li>
           <li><button onclick="switchTab('projects')" id="nav-projects">Projects</button></li>
           <li><button onclick="switchTab('engagement')" id="nav-engagement">Engagement</button></li>
-          <li><button onclick="switchTab('contact')" id="nav-contact">Contact</button></li>
+          <li><button onclick="switchTab('update')" id="nav-update">Update Portal</button></li>
+         <!--leaving contact out for now <li><button onclick="switchTab('contact')" id="nav-contact">Contact</button></li> -->
         </ul>
       </nav>
       <div class="search-box">
@@ -496,6 +526,149 @@
       <div class="engage-grid" id="engageGrid"></div>
     </section>
 
+    <section id="update" class="hidden fade-in">
+      <h2 class="section-title">Update Portal</h2>
+      <p class="section-subtitle">Contribute to the Sésame portal by adding new opportunities, those are request and will be reviewed before publiishing.</p>
+
+      <div id="update-selection" class="admin-selection-container">
+        <div class="admin-card" onclick="showUpdateForm('role')">
+          <div class="admin-icon"></div>
+          <h3 class="role-title" style= "color: var(--primary-rose)">Update Role</h3>
+          <p class="role-desc">Post a new role opening for an existing or new project.</p>
+        </div>
+        <div class="admin-card" onclick="showUpdateForm('project')">
+          <div class="admin-icon"></div>
+          <h3 class="role-title" style= "color: var(--primary-rose)">Update Project</h3>
+          <p class="role-desc">Showcase a new innovative project or R&D initiative.</p>
+        </div>
+      </div>
+
+      <div id="form-role-container" class="hidden form-wrapper fade-in">
+        <div class="back-link" onclick="hideUpdateForms()">← Back to selection</div>
+        <h3 class="section-title" style="font-size:1.8rem;">Add New Role</h3>
+        <div class="form-instruction">
+          <strong>Instructions:</strong> Please ensure the project name matches exactly if you are adding a role to an existing project. All fields are required.
+        </div>
+        <form id="roleForm" onsubmit="submitRole(event)">
+          <div class="form-group">
+            <label>Job Title</label>
+            <input type="text" name="title" placeholder="e.g. Data Scientist" required>
+          </div>
+          <div class="form-group">
+            <label>Project Name</label>
+            <input type="text" name="project" placeholder="e.g. Project Alpha" required>
+          </div>
+          <div class="form-group">
+            <label>Specification</label>
+            <input type="text" name="spec" placeholder="e.g. Full Time / Expert" required>
+          </div>
+          <div class="form-group">
+            <label>Image URL (Logo)</label>
+            <input type="text" name="img" placeholder="https://..." required>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea name="desc" placeholder="Describe the role responsibilities..." required></textarea>
+          </div>
+          <div class="form-group">
+            <label>Contact Email</label>
+            <input type="email" name="email" placeholder="manager@devoteam.com" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%">Submit Role</button>
+        </form>
+      </div>
+
+      <div id="form-project-container" class="hidden form-wrapper fade-in">
+        <div class="back-link" onclick="hideUpdateForms()">← Back to selection</div>
+        <h3 class="section-title" style="font-size:1.8rem;">Add New Project</h3>
+        <div class="form-instruction">
+          <strong>Instructions:</strong> Fill in the details below. For images, please provide direct public links. You can add up to 6 key features.
+        </div>
+        <form id="projectForm" onsubmit="submitProject(event)">
+          <div class="form-group">
+            <label>Project Title</label>
+            <input type="text" name="title" required>
+          </div>
+          <div class="form-group">
+            <label>Subtitle (Short Pitch)</label>
+            <input type="text" name="subtitle" required>
+          </div>
+          <div class="btn-row">
+            <div class="form-group" style="flex:1">
+              <label>Category</label>
+              <select name="category" required>
+                <option value="Client">Client</option>
+                <option value="Internal">Internal</option>
+                <option value="R&D">R&D</option>
+                <option value="Offer">Offer</option>
+              </select>
+            </div>
+            <div class="form-group" style="flex:1">
+              <label>Entity (Primary)</label>
+              <input type="text" name="entity" placeholder="e.g. France" required>
+            </div>
+          </div>
+          <div class="form-group">
+             <label>Entity 2 (Optional)</label>
+             <input type="text" name="entity2" placeholder="e.g. AWS">
+          </div>
+          <div class="form-group">
+            <label>Main Image URL</label>
+            <input type="text" name="img1" placeholder="https://..." required>
+          </div>
+          <div class="btn-row">
+             <div class="form-group" style="flex:1">
+               <label>Demo Link</label>
+               <input type="text" name="demoLink" placeholder="#">
+             </div>
+             <div class="form-group" style="flex:1">
+               <label>Doc Link</label>
+               <input type="text" name="docLink" placeholder="#">
+             </div>
+          </div>
+          
+          <hr style="margin: 1.5rem 0; border:0; border-top:1px solid #eee;">
+          
+          <h4 style="margin-bottom:1rem;">Key Features</h4>
+          
+          <div id="features-container">
+            <div class="feature-block">
+              <h5 style="font-size:0.85rem; color:var(--primary-rose); margin-bottom:0.5rem;">Feature 1</h5>
+              <div class="form-group">
+                <label>Title</label>
+                <input type="text" name="f1Title" required>
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <textarea name="f1Desc" style="height:60px;" required></textarea>
+              </div>
+            </div>
+
+            <div class="feature-block" style="margin-top:1.5rem;">
+               <h5 style="font-size:0.85rem; color:var(--primary-rose); margin-bottom:0.5rem;">Feature 2</h5>
+              <div class="form-group">
+                <label>Title</label>
+                <input type="text" name="f2Title" required>
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <textarea name="f2Desc" style="height:60px;" required></textarea>
+              </div>
+            </div>
+            </div>
+
+          <button type="button" id="addFeatBtn" class="btn" 
+            style="width:100%; margin-top:2rem; margin-bottom:1rem; background: #fff0f3; color: var(--primary-rose); border: 2px dashed var(--primary-rose); font-weight:600; padding: 0.8rem;" 
+            onclick="addFeatureField()">
+            + Add Another Feature
+          </button>
+
+          <button type="submit" class="btn btn-primary" style="width:100%;">Submit Project</button>
+        </form>
+      </div>
+
+    </section>
+
     <section id="contact" class="hidden fade-in">
       <h2 class="section-title">Get in Touch</h2>
       <div class="form-wrapper">
@@ -590,8 +763,8 @@
   document.getElementById('search-view').classList.add('hidden');
   lastActiveTab = tabId;
 
-  // 2. Cacher TOUTES les sections (Ajout crucial de 'landing' ici)
-  ['landing', 'roles', 'projects', 'engagement', 'contact'].forEach(id => {
+  // 2. Cacher TOUTES les sections 
+  ['landing', 'roles', 'projects', 'engagement', 'contact','update'].forEach(id => {
     const section = document.getElementById(id);
     const navBtn = document.getElementById(`nav-${id}`);
     
@@ -612,6 +785,9 @@
   // 4. Activer le bouton du menu
   const activeBtn = document.getElementById(`nav-${tabId}`);
   if (activeBtn) activeBtn.classList.add('active');
+
+  // Reset Update Forms if leaving update tab
+      if(tabId !== 'update') hideUpdateForms();
 
   // 5. Scroll automatique vers le HAUT de la page (Demande utilisateur)
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -639,7 +815,6 @@
       document.getElementById('m-title').innerText = project.title;
       document.getElementById('m-subtitle').innerText = project.subtitle;
       
-      // ... (rest of the function remains the same: demoBtn, docBtn, features loop) ...
       
       const demoBtn = document.getElementById('m-demo');
       const docBtn = document.getElementById('m-doc');
@@ -987,6 +1162,135 @@
       animateValue("stat-engage", 0, db.engagement.length, 1000);
 
       document.getElementById('loader').style.display = 'none';
+    }
+
+    // --- ADMIN / UPDATE FORM LOGIC ---
+    function showUpdateForm(type) {
+      document.getElementById('update-selection').classList.add('hidden');
+      if(type === 'role') {
+        document.getElementById('form-role-container').classList.remove('hidden');
+      } else {
+        document.getElementById('form-project-container').classList.remove('hidden');
+      }
+    }
+
+    function hideUpdateForms() {
+      document.getElementById('form-role-container').classList.add('hidden');
+      document.getElementById('form-project-container').classList.add('hidden');
+      document.getElementById('update-selection').classList.remove('hidden');
+    }
+
+    function submitRole(e) {
+      e.preventDefault();
+      const form = document.getElementById('roleForm');
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      document.getElementById('loader').style.display = 'flex';
+
+      google.script.run
+        .withSuccessHandler((msg) => {
+           alert(msg);
+           form.reset();
+           document.getElementById('loader').style.display = 'none';
+           hideUpdateForms();
+           // Reload data to show new item
+           google.script.run.withSuccessHandler(dataLoaded).getPortalData();
+        })
+        .withFailureHandler((err) => {
+           alert("Error: " + err.message);
+           document.getElementById('loader').style.display = 'none';
+        })
+        .addJobToSheet(data);
+    }
+
+    let featureCount = 2; // Start at 2 because F1 and F2 are hardcoded
+
+    function addFeatureField() {
+      if (featureCount >= 6) {
+        alert("Maximum of 6 features allowed.");
+        return;
+      }
+      
+      featureCount++;
+      const container = document.getElementById('features-container');
+      
+      // Create wrapper
+      const div = document.createElement('div');
+      div.className = 'feature-block fade-in';
+      div.style.marginTop = '1.5rem';
+      div.style.borderTop = '1px dashed #eee'; // Visual separator
+      div.style.paddingTop = '1rem';
+      
+      div.innerHTML = `
+        <h5 style="font-size:0.85rem; color:var(--primary-rose); margin-bottom:0.5rem;">Feature ${featureCount}</h5>
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" name="f${featureCount}Title" placeholder="Feature Title">
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea name="f${featureCount}Desc" style="height:60px;" placeholder="Feature Description"></textarea>
+        </div>
+      `;
+      
+      container.appendChild(div);
+
+      // Disable button if limit reached
+      if (featureCount === 6) {
+        const btn = document.getElementById('addFeatBtn');
+        btn.disabled = true;
+        btn.innerText = "Max Features Reached";
+        btn.style.opacity = "0.5";
+        btn.style.cursor = "not-allowed";
+      }
+    }
+
+    // Reset feature count when switching forms or submitting
+    function hideUpdateForms() {
+       // ... existing hide logic ...
+       document.getElementById('form-role-container').classList.add('hidden');
+       document.getElementById('form-project-container').classList.add('hidden');
+       document.getElementById('update-selection').classList.remove('hidden');
+       
+       // Reset Feature Form Logic
+       featureCount = 2;
+       document.getElementById('projectForm').reset();
+       // Remove dynamic features (keep first 2 children nodes)
+       const container = document.getElementById('features-container');
+       while (container.children.length > 2) {
+         container.removeChild(container.lastChild);
+       }
+       // Reset Button
+       const btn = document.getElementById('addFeatBtn');
+       btn.disabled = false;
+       btn.innerText = "+ Add Feature";
+       btn.style.opacity = "1";
+       btn.style.cursor = "pointer";
+    }
+
+    function submitProject(e) {
+      e.preventDefault();
+      const form = document.getElementById('projectForm');
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      document.getElementById('loader').style.display = 'flex';
+
+      google.script.run
+        .withSuccessHandler((msg) => {
+           alert(msg);
+           form.reset();
+           document.getElementById('loader').style.display = 'none';
+           hideUpdateForms();
+           // Reload data
+           google.script.run.withSuccessHandler(dataLoaded).getPortalData();
+        })
+        .withFailureHandler((err) => {
+           alert("Error: " + err.message);
+           document.getElementById('loader').style.display = 'none';
+        })
+        .addProjectToSheet(data);
     }
   </script>
 </body>
